@@ -1,3 +1,5 @@
+import 'package:blog/controller/user_controller.dart';
+import 'package:blog/core/routers.dart';
 import 'package:blog/core/size.dart';
 import 'package:blog/domain/device/user_session.dart';
 import 'package:blog/view/pages/post/home_page_view_model.dart';
@@ -61,7 +63,7 @@ class _HomePageState extends ConsumerState<HomePage> {
 
   Widget _buildAppBarTitle() {
     if (UserSession.isLogin) {
-      return Text("로그인한 유저 토큰 : ${UserSession.jwtToken}");
+      return Text("로그인한 유저 토큰 : ${UserSession.user!.username}");
     } else {
       return const Text("로그인 되지 않은 상태입니다.");
     }
@@ -79,7 +81,9 @@ class _HomePageState extends ConsumerState<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pushNamed(context, Routers.writeForm);
+                },
                 child: const Text(
                   "글쓰기",
                   style: TextStyle(
@@ -92,8 +96,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               const Divider(),
               TextButton(
                 onPressed: () {
-                  //Navigator.pop(context);
-                  scaffodKey.currentState!.openEndDrawer();
+                  Navigator.pushNamed(context, Routers.userInfo);
                 },
                 child: const Text(
                   "회원정보보기",
@@ -106,7 +109,10 @@ class _HomePageState extends ConsumerState<HomePage> {
               ),
               const Divider(),
               TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  Navigator.popAndPushNamed(context, Routers.loginForm);
+                  await ref.read(userController).logout();
+                },
                 child: const Text(
                   "로그아웃",
                   style: TextStyle(

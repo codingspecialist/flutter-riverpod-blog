@@ -1,4 +1,5 @@
 import 'package:blog/core/routers.dart';
+import 'package:blog/domain/device/user_session.dart';
 import 'package:blog/domain/user/user.dart';
 import 'package:blog/domain/user/user_api_repository.dart';
 import 'package:blog/dto/auth_req_dto.dart';
@@ -84,5 +85,9 @@ class UserController {
         SnackBar(content: Text("로그인 실패")),
       );
     }
+  }
+
+  Future<void> logout() async {
+    UserSession.logout();
   }
 }
