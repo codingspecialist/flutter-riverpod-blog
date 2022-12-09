@@ -1,11 +1,13 @@
 import 'package:blog/core/size.dart';
-import 'package:blog/provider/auth_provider.dart';
+import 'package:blog/domain/device/user_session.dart';
 import 'package:blog/view/pages/post/home_page_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
 class HomePage extends ConsumerStatefulWidget {
+  const HomePage({super.key});
+
   @override
   ConsumerState createState() => _HomePageState();
 }
@@ -17,7 +19,7 @@ class _HomePageState extends ConsumerState<HomePage> {
   @override
   Widget build(BuildContext context) {
     Logger().d("homePage 빌드");
-    final hvm = ref.watch(homePageViewModel.notifier);
+    final hpVM = ref.watch(homePageViewModel.notifier);
 
     return Scaffold(
       key: scaffodKey,
@@ -29,11 +31,11 @@ class _HomePageState extends ConsumerState<HomePage> {
             scaffodKey.currentState!.openDrawer();
           }
         },
-        child: Icon(Icons.code),
+        child: const Icon(Icons.code),
       ),
       drawer: _navigation(context),
       appBar: AppBar(
-        title: _buildAppBarTitle(hvm),
+        title: _buildAppBarTitle(),
       ),
       body: RefreshIndicator(
         key: refreshKey,
@@ -43,25 +45,25 @@ class _HomePageState extends ConsumerState<HomePage> {
           itemBuilder: (context, index) {
             return InkWell(
               onTap: () {},
-              child: ListTile(
+              child: const ListTile(
                 leading: Text("아이디"),
                 title: Text("제목"),
               ),
             );
           },
           separatorBuilder: (context, index) {
-            return Divider();
+            return const Divider();
           },
         ),
       ),
     );
   }
 
-  Widget _buildAppBarTitle(HomePageViewModel hvm) {
-    if (hvm.ap.isLogin) {
-      return Text("로그인한 유저 토큰 : ${hvm.ap.jwtToken}");
+  Widget _buildAppBarTitle() {
+    if (UserSession.isLogin) {
+      return Text("로그인한 유저 토큰 : ${UserSession.jwtToken}");
     } else {
-      return Text("로그인 되지 않은 상태입니다.");
+      return const Text("로그인 되지 않은 상태입니다.");
     }
   }
 
@@ -78,7 +80,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             children: [
               TextButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   "글쓰기",
                   style: TextStyle(
                     fontSize: 20,
@@ -87,13 +89,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ),
                 ),
               ),
-              Divider(),
+              const Divider(),
               TextButton(
                 onPressed: () {
                   //Navigator.pop(context);
                   scaffodKey.currentState!.openEndDrawer();
                 },
-                child: Text(
+                child: const Text(
                   "회원정보보기",
                   style: TextStyle(
                     fontSize: 20,
@@ -102,10 +104,10 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ),
                 ),
               ),
-              Divider(),
+              const Divider(),
               TextButton(
                 onPressed: () {},
-                child: Text(
+                child: const Text(
                   "로그아웃",
                   style: TextStyle(
                     fontSize: 20,
@@ -114,7 +116,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                   ),
                 ),
               ),
-              Divider(),
+              const Divider(),
             ],
           ),
         ),

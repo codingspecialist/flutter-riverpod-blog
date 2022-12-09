@@ -1,6 +1,4 @@
 import 'package:blog/controller/user_controller.dart';
-import 'package:blog/core/routers.dart';
-import 'package:blog/provider/auth_provider.dart';
 import 'package:blog/util/validator_util.dart';
 import 'package:blog/view/components/custom_elevated_button.dart';
 import 'package:blog/view/components/custom_text_form_field.dart';
@@ -8,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class LoginPage extends ConsumerWidget {
+  LoginPage({super.key});
   final _formKey = GlobalKey<FormState>();
   final _username = TextEditingController();
   final _password = TextEditingController();
@@ -30,7 +29,7 @@ class LoginPage extends ConsumerWidget {
         Container(
           alignment: Alignment.center,
           height: 200,
-          child: Text(
+          child: const Text(
             "로그인 페이지",
             style: TextStyle(
               fontSize: 30,
@@ -72,7 +71,7 @@ class LoginPage extends ConsumerWidget {
             onPressed: () {
               uc.joinForm();
             },
-            child: Text("아직 회원가입이 안되어 있나요?"),
+            child: const Text("아직 회원가입이 안되어 있나요?"),
           ),
         ],
       ),
