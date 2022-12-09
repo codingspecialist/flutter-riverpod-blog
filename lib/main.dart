@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      initialRoute: Routers.home,
+      initialRoute: Routers.joinForm,
       routes: {
         Routers.joinForm: (context) => JoinPage(),
         Routers.loginForm: (context) => LoginPage(),
