@@ -7,6 +7,7 @@ import 'package:blog/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
 /**
  * View -> Controller 요청
@@ -56,11 +57,32 @@ class UserController {
     }
   }
 
-  void loginForm() {
+  Future<void> loginForm() async {
     Navigator.popAndPushNamed(context, Routers.loginForm);
   }
 
-  void joinForm() {
+  Future<void> joinForm() async {
     Navigator.popAndPushNamed(context, Routers.joinForm);
+  }
+
+  Future<void> login(
+      {required String username, required String password}) async {
+    // 1. DTO 변환
+    LoginReqDto loginReqDto =
+        LoginReqDto(username: username, password: password);
+
+    // 2. 통신 요청
+    ResponseDto responseDto =
+        await _ref.read(userApiRepository).login(loginReqDto);
+
+    // 3. 비지니스 로직 처리
+    if (responseDto.code == 1) {
+      Logger().d("code 1");
+      Navigator.pushNamed(context, Routers.home);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("로그인 실패")),
+      );
+    }
   }
 }
