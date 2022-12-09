@@ -2,7 +2,6 @@ import 'package:blog/controller/user_controller.dart';
 import 'package:blog/core/routers.dart';
 import 'package:blog/core/size.dart';
 import 'package:blog/domain/device/user_session.dart';
-import 'package:blog/view/pages/post/home_page_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -15,13 +14,12 @@ class HomePage extends ConsumerStatefulWidget {
 }
 
 class _HomePageState extends ConsumerState<HomePage> {
-  var refreshKey = GlobalKey<RefreshIndicatorState>();
-  var scaffodKey = GlobalKey<ScaffoldState>();
+  final refreshKey = GlobalKey<RefreshIndicatorState>();
+  final scaffodKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     Logger().d("homePage 빌드");
-    final hpVM = ref.watch(homePageViewModel.notifier);
 
     return Scaffold(
       key: scaffodKey,
@@ -35,7 +33,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         },
         child: const Icon(Icons.code),
       ),
-      drawer: _navigation(context),
+      drawer: _navigation(),
       appBar: AppBar(
         title: _buildAppBarTitle(),
       ),
@@ -69,7 +67,7 @@ class _HomePageState extends ConsumerState<HomePage> {
     }
   }
 
-  Widget _navigation(BuildContext context) {
+  Widget _navigation() {
     return Container(
       width: getDrawerWidth(context),
       height: double.infinity,
@@ -110,8 +108,7 @@ class _HomePageState extends ConsumerState<HomePage> {
               const Divider(),
               TextButton(
                 onPressed: () async {
-                  Navigator.popAndPushNamed(context, Routers.loginForm);
-                  await ref.read(userController).logout();
+                  await UserController().logout();
                 },
                 child: const Text(
                   "로그아웃",

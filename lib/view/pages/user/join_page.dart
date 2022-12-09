@@ -3,20 +3,19 @@ import 'package:blog/util/validator_util.dart';
 import 'package:blog/view/components/custom_elevated_button.dart';
 import 'package:blog/view/components/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
-class JoinPage extends ConsumerWidget {
-  // 추가
+class JoinPage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _username = TextEditingController(); // 추가
   final _password = TextEditingController(); // 추가
-  final _email = TextEditingController(); // 추가
+  final _email = TextEditingController();
+
+  JoinPage({super.key}); // 추가
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    // 추가
-    final uc = ref.read(userController); // 추가
-
+  Widget build(BuildContext context) {
+    Logger().d("joinpage 그려짐");
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -25,7 +24,7 @@ class JoinPage extends ConsumerWidget {
             Container(
               alignment: Alignment.center,
               height: 200,
-              child: Text(
+              child: const Text(
                 "회원가입 페이지",
                 style: TextStyle(
                   fontSize: 30,
@@ -33,14 +32,14 @@ class JoinPage extends ConsumerWidget {
                 ),
               ),
             ),
-            _joinForm(uc), // 추가
+            _joinForm(), // 추가
           ],
         ),
       ),
     );
   }
 
-  Widget _joinForm(UserController uc) {
+  Widget _joinForm() {
     return Form(
       key: _formKey,
       child: Column(
@@ -65,7 +64,7 @@ class JoinPage extends ConsumerWidget {
             funPageRoute: () {
               if (_formKey.currentState!.validate()) {
                 // 추가
-                uc.join(
+                UserController().join(
                     username: _username.text.trim(),
                     password: _password.text.trim(),
                     email: _email.text.trim());
@@ -74,9 +73,9 @@ class JoinPage extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () {
-              uc.loginForm(); // 추가
+              UserController().loginForm(); // 추가
             },
-            child: Text("로그인 페이지로 이동"),
+            child: const Text("로그인 페이지로 이동"),
           ),
         ],
       ),

@@ -3,14 +3,18 @@ import 'package:blog/view/components/custom_elevated_button.dart';
 import 'package:blog/view/components/custom_text_form_field.dart';
 import 'package:blog/view/components/custom_textarea.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 class UpdatePage extends StatelessWidget {
   final _formKey = GlobalKey<FormState>();
   final _title = TextEditingController();
   final _content = TextEditingController();
 
+  UpdatePage({super.key});
+
   @override
   Widget build(BuildContext context) {
+    Logger().d("UpdatePage");
     return Scaffold(
       appBar: AppBar(),
       body: Padding(

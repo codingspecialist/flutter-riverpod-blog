@@ -16,6 +16,6 @@ class UserSession {
     user = null;
     jwtToken = null;
     isLogin = false;
-    await LocalRepository.removeShardJwtToken();
+    await LocalRepository().removeShardJwtToken();
   }
 }

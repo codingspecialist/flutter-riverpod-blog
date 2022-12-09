@@ -17,14 +17,15 @@ class Routers {
   static String userInfo = "/userInfo";
 }
 
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Map<String, Widget Function(BuildContext)> getRouters() {
   return {
     Routers.joinForm: (context) => JoinPage(),
     Routers.loginForm: (context) => LoginPage(),
-    Routers.home: (context) => HomePage(),
-    Routers.detail: (context) => DetailPage(),
+    Routers.home: (context) => const HomePage(),
+    Routers.detail: (context) => const DetailPage(),
     Routers.updateForm: (context) => UpdatePage(),
     Routers.writeForm: (context) => WritePage(),
-    Routers.userInfo: (context) => UserInfoPage(),
+    Routers.userInfo: (context) => const UserInfoPage(),
   };
 }

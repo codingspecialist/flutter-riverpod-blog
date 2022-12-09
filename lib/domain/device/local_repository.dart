@@ -8,7 +8,15 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalRepository {
-  static Future<void> initShardJwtToken() async {
+  static final LocalRepository _instance = LocalRepository._single();
+
+  LocalRepository._single();
+  factory LocalRepository() {
+    Logger().d("LocalRepository 생성자");
+    return _instance;
+  }
+
+  Future<void> initShardJwtToken() async {
     Logger().d("jwt init");
     final prefs = await SharedPreferences.getInstance();
     final deviceJwtToken = prefs.getString("jwtToken");
@@ -25,7 +33,7 @@ class LocalRepository {
     }
   }
 
-  static Future<void> removeShardJwtToken() async {
+  Future<void> removeShardJwtToken() async {
     Logger().d("jwt remove");
     final prefs = await SharedPreferences.getInstance();
     prefs.remove("jwtToken");

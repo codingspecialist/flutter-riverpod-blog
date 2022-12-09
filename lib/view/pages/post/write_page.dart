@@ -9,6 +9,8 @@ class WritePage extends StatelessWidget {
   final _title = TextEditingController();
   final _content = TextEditingController();
 
+  WritePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

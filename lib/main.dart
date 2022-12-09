@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await LocalRepository.initShardJwtToken();
+  await LocalRepository().initShardJwtToken();
   // 자동 로그인시 필요
   runApp(
     const ProviderScope(
@@ -14,8 +14,6 @@ void main() async {
     ),
   );
 }
-
-final navigatorKey = GlobalKey<NavigatorState>();
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

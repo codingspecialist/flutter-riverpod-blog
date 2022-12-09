@@ -1,16 +1,15 @@
-import 'package:blog/domain/device/user_session.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
-
-final httpConnector = Provider<HttpConnector>((ref) {
-  return HttpConnector();
-});
 
 class HttpConnector {
   final host = "http://192.168.0.2:8080";
   final headers = {"Content-Type": "application/json; charset=utf-8"};
-  final Client _client = Client();
+  static final HttpConnector _instance = HttpConnector._single();
+  factory HttpConnector() {
+    Logger().d("HttpConnector 생성자");
+    return _instance;
+  }
+  HttpConnector._single();
 
   Future<Response> get(String path, {String? jwtToken}) async {
     if (jwtToken != null) {
@@ -18,7 +17,7 @@ class HttpConnector {
     }
     Logger().d("${headers}");
     Uri uri = Uri.parse("${host}${path}");
-    Response response = await _client.get(uri, headers: headers);
+    Response response = await Client().get(uri, headers: headers);
     return response;
   }
 
@@ -27,7 +26,7 @@ class HttpConnector {
       headers["Authorization"] = jwtToken;
     }
     Uri uri = Uri.parse("${host}${path}");
-    Response response = await _client.delete(uri, headers: headers);
+    Response response = await Client().delete(uri, headers: headers);
     return response;
   }
 
@@ -36,7 +35,7 @@ class HttpConnector {
       headers["Authorization"] = jwtToken;
     }
     Uri uri = Uri.parse("${host}${path}");
-    Response response = await _client.put(uri, body: body, headers: headers);
+    Response response = await Client().put(uri, body: body, headers: headers);
     return response;
   }
 
@@ -45,7 +44,7 @@ class HttpConnector {
       headers["Authorization"] = jwtToken;
     }
     Uri uri = Uri.parse("${host}${path}");
-    Response response = await _client.post(uri, body: body, headers: headers);
+    Response response = await Client().post(uri, body: body, headers: headers);
     return response;
   }
 }

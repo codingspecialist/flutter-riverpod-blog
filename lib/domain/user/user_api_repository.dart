@@ -5,27 +5,22 @@ import 'package:blog/domain/device/user_session.dart';
 import 'package:blog/domain/user/user.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
-
 import 'package:blog/util/response_util.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final userApiRepository = Provider<UserApiRepository>((ref) {
-  return UserApiRepository(ref);
-});
-
 class UserApiRepository {
-  UserApiRepository(this._ref);
-  Ref _ref;
+  static final UserApiRepository _instance = UserApiRepository._single();
+
+  UserApiRepository._single();
+  factory UserApiRepository() {
+    return _instance;
+  }
 
   Future<ResponseDto> join(JoinReqDto joinReqDto) async {
     String requestBody = jsonEncode(joinReqDto.toJson());
-
-    Response response =
-        await _ref.read(httpConnector).post("/join", requestBody);
-
+    Response response = await HttpConnector().post("/join", requestBody);
     return toResponseDto(response); // ResponseDto 응답
   }
 
@@ -34,8 +29,7 @@ class UserApiRepository {
     String requestBody = jsonEncode(loginReqDto.toJson());
 
     // 2. 통신 시작
-    Response response =
-        await _ref.read(httpConnector).post("/login", requestBody);
+    Response response = await HttpConnector().post("/login", requestBody);
 
     // 3. 토큰 받기
     String jwtToken = response.headers["authorization"].toString();
@@ -49,10 +43,8 @@ class UserApiRepository {
     ResponseDto responseDto = toResponseDto(response);
 
     // 6. AuthProvider에 로긴 정보 저장
-
-    UserSession.user = User.fromJson(responseDto.data);
-    UserSession.jwtToken = jwtToken;
-    UserSession.isLogin = true;
+    User user = User.fromJson(responseDto.data);
+    UserSession.login(user, jwtToken);
 
     return responseDto; // ResponseDto 응답
   }

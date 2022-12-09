@@ -16,17 +16,15 @@ class LoginPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     Logger().d("로그인 페이지 빌드 시작");
-    // 추가
-    final uc = ref.read(userController); // 추가
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: buildList(uc, context),
+        child: buildList(context),
       ),
     );
   }
 
-  Widget buildList(UserController uc, BuildContext context) {
+  Widget buildList(BuildContext context) {
     return ListView(
       children: [
         Container(
@@ -40,12 +38,12 @@ class LoginPage extends ConsumerWidget {
             ),
           ),
         ),
-        _loginForm(uc, context), // 추가
+        _loginForm(context), // 추가
       ],
     );
   }
 
-  Widget _loginForm(UserController uc, BuildContext context) {
+  Widget _loginForm(BuildContext context) {
     return Form(
       key: _formKey,
       child: Column(
@@ -64,15 +62,16 @@ class LoginPage extends ConsumerWidget {
             text: "로그인",
             funPageRoute: () async {
               if (_formKey.currentState!.validate()) {
-                uc.login(
+                await UserController().login(
                     username: _username.text.trim(),
                     password: _password.text.trim()); // 추가
+
               }
             },
           ),
           TextButton(
             onPressed: () {
-              uc.joinForm();
+              UserController().joinForm();
             },
             child: const Text("아직 회원가입이 안되어 있나요?"),
           ),

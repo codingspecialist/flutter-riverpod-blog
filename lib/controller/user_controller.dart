@@ -4,10 +4,8 @@ import 'package:blog/domain/user/user.dart';
 import 'package:blog/domain/user/user_api_repository.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
-import 'package:blog/main.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
 /**
@@ -24,14 +22,15 @@ import 'package:logger/logger.dart';
  * ViewModel 책임 : 데이터 담기
  */
 
-final userController = Provider<UserController>((ref) {
-  return UserController(ref);
-});
-
 class UserController {
-  UserController(this._ref);
-  Ref _ref;
-  final context = navigatorKey.currentContext!;
+  final mContext = navigatorKey.currentContext;
+  static final UserController _instance = UserController._single();
+  final UserApiRepository userApiRepository = UserApiRepository();
+
+  UserController._single();
+  factory UserController() {
+    return _instance;
+  }
 
   Future<void> join(
       {required String username,
@@ -42,28 +41,25 @@ class UserController {
         JoinReqDto(username: username, password: password, email: email);
 
     // 2. 통신 요청
-    ResponseDto responseDto =
-        await _ref.read(userApiRepository).join(joinReqDto);
+    ResponseDto responseDto = await userApiRepository.join(joinReqDto);
 
     // 3. 비지니스 로직 처리
     if (responseDto.code == 1) {
-      User user = User.fromJson(responseDto.data);
-      print("가입된 유저 이름 : ${user.username}");
-      Navigator.popAndPushNamed(context, Routers.loginForm);
+      Navigator.popAndPushNamed(mContext!, Routers.loginForm);
       // 4. 응답된 데이터를 ViewModel에 반영해야 한다면 통신 성공시에 추가하기
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("회원가입 실패")),
+      ScaffoldMessenger.of(mContext!).showSnackBar(
+        const SnackBar(content: Text("회원가입 실패")),
       );
     }
   }
 
   Future<void> loginForm() async {
-    Navigator.popAndPushNamed(context, Routers.loginForm);
+    Navigator.popAndPushNamed(mContext!, Routers.loginForm);
   }
 
   Future<void> joinForm() async {
-    Navigator.popAndPushNamed(context, Routers.joinForm);
+    Navigator.popAndPushNamed(mContext!, Routers.joinForm);
   }
 
   Future<void> login(
@@ -73,21 +69,21 @@ class UserController {
         LoginReqDto(username: username, password: password);
 
     // 2. 통신 요청
-    ResponseDto responseDto =
-        await _ref.read(userApiRepository).login(loginReqDto);
-
-    // 3. 비지니스 로직 처리
+    ResponseDto responseDto = await userApiRepository.login(loginReqDto);
+    //3. 비지니스 로직 처리
     if (responseDto.code == 1) {
-      Logger().d("code 1");
-      Navigator.pushNamed(context, Routers.home);
+      await Navigator.of(navigatorKey.currentContext!)
+          .pushNamedAndRemoveUntil(Routers.home, (route) => false);
     } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("로그인 실패")),
+      ScaffoldMessenger.of(mContext!).showSnackBar(
+        const SnackBar(content: Text("로그인 실패")),
       );
     }
   }
 
   Future<void> logout() async {
-    UserSession.logout();
+    await UserSession.logout();
+    await Navigator.of(navigatorKey.currentContext!)
+        .pushNamedAndRemoveUntil(Routers.loginForm, (route) => false);
   }
 }
