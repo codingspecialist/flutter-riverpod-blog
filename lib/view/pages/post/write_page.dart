@@ -1,4 +1,4 @@
-import 'package:blog/util/validator_util.dart';
+import 'package:blog/core/util/validator_util.dart';
 import 'package:blog/view/components/custom_elevated_button.dart';
 import 'package:blog/view/components/custom_text_form_field.dart';
 import 'package:blog/view/components/custom_textarea.dart';

@@ -1,6 +1,6 @@
-import 'package:blog/core/routers.dart';
-import 'package:blog/domain/device/local_repository.dart';
-import 'package:blog/domain/device/user_session.dart';
+import 'package:blog/core/constant/routers.dart';
+import 'package:blog/domain/local/local_repository.dart';
+import 'package:blog/domain/local/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      initialRoute: UserSession.isLogin ? Routers.home : Routers.loginForm,
+      initialRoute: UserModel.isLogin ? Routers.home : Routers.loginForm,
       routes: getRouters(),
     );
   }
