@@ -17,31 +17,35 @@ class UpdatePage extends StatelessWidget {
     Logger().d("UpdatePage");
     return Scaffold(
       appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              CustomTextFormField(
-                controller: _title,
-                hint: "Title",
-                funValidator: validateTitle(),
-              ),
-              CustomTextArea(
-                controller: _content,
-                hint: "Content",
-                funValidator: validateContent(),
-              ),
-              // homepage -> detailpage -> detailpage
-              CustomElevatedButton(
-                text: "글 수정하기",
-                funPageRoute: () async {
-                  if (_formKey.currentState!.validate()) {}
-                },
-              ),
-            ],
-          ),
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          children: [
+            CustomTextFormField(
+              controller: _title,
+              hint: "Title",
+              funValidator: validateTitle(),
+            ),
+            CustomTextArea(
+              controller: _content,
+              hint: "Content",
+              funValidator: validateContent(),
+            ),
+            // homepage -> detailpage -> detailpage
+            CustomElevatedButton(
+              text: "글 수정하기",
+              funPageRoute: () async {
+                if (_formKey.currentState!.validate()) {}
+              },
+            ),
+          ],
         ),
       ),
     );

@@ -22,49 +22,34 @@ class _HomePageState extends ConsumerState<HomePage> {
     Logger().d("homePage 빌드");
 
     return Scaffold(
-      key: scaffodKey,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          if (scaffodKey.currentState!.isDrawerOpen) {
-            scaffodKey.currentState!.openEndDrawer();
-          } else {
-            scaffodKey.currentState!.openDrawer();
-          }
-        },
-        child: const Icon(Icons.code),
-      ),
       drawer: _navigation(),
       appBar: AppBar(
-        title: _buildAppBarTitle(),
-      ),
-      body: RefreshIndicator(
-        key: refreshKey,
-        onRefresh: () async {},
-        child: ListView.separated(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return InkWell(
-              onTap: () {},
-              child: const ListTile(
-                leading: Text("아이디"),
-                title: Text("제목"),
-              ),
-            );
-          },
-          separatorBuilder: (context, index) {
-            return const Divider();
-          },
-        ),
-      ),
+          title: Text(
+              "로그인한 유저 토큰 : ${UserSession.user == null ? "없음" : UserSession.user!.username}")),
+      body: _buildBody(),
     );
   }
 
-  Widget _buildAppBarTitle() {
-    if (UserSession.isLogin) {
-      return Text("로그인한 유저 토큰 : ${UserSession.user!.username}");
-    } else {
-      return const Text("로그인 되지 않은 상태입니다.");
-    }
+  Widget _buildBody() {
+    return RefreshIndicator(
+      key: refreshKey,
+      onRefresh: () async {},
+      child: ListView.separated(
+        itemCount: 5,
+        itemBuilder: (context, index) {
+          return InkWell(
+            onTap: () {},
+            child: const ListTile(
+              leading: Text("아이디"),
+              title: Text("제목"),
+            ),
+          );
+        },
+        separatorBuilder: (context, index) {
+          return const Divider();
+        },
+      ),
+    );
   }
 
   Widget _navigation() {

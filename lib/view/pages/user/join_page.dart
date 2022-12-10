@@ -17,24 +17,28 @@ class JoinPage extends StatelessWidget {
   Widget build(BuildContext context) {
     Logger().d("joinpage 그려짐");
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: ListView(
-          children: [
-            Container(
-              alignment: Alignment.center,
-              height: 200,
-              child: const Text(
-                "회원가입 페이지",
-                style: TextStyle(
-                  fontSize: 30,
-                  fontWeight: FontWeight.bold,
-                ),
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: ListView(
+        children: [
+          Container(
+            alignment: Alignment.center,
+            height: 200,
+            child: const Text(
+              "회원가입 페이지",
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            _joinForm(), // 추가
-          ],
-        ),
+          ),
+          _joinForm(), // 추가
+        ],
       ),
     );
   }

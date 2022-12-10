@@ -15,30 +15,34 @@ class WritePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            children: [
-              CustomTextFormField(
-                controller: _title,
-                hint: "Title",
-                funValidator: validateTitle(),
-              ),
-              CustomTextArea(
-                controller: _content,
-                hint: "Content",
-                funValidator: validateContent(),
-              ),
-              CustomElevatedButton(
-                text: "글쓰기",
-                funPageRoute: () async {
-                  if (_formKey.currentState!.validate()) {}
-                },
-              ),
-            ],
-          ),
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          children: [
+            CustomTextFormField(
+              controller: _title,
+              hint: "Title",
+              funValidator: validateTitle(),
+            ),
+            CustomTextArea(
+              controller: _content,
+              hint: "Content",
+              funValidator: validateContent(),
+            ),
+            CustomElevatedButton(
+              text: "글쓰기",
+              funPageRoute: () async {
+                if (_formKey.currentState!.validate()) {}
+              },
+            ),
+          ],
         ),
       ),
     );
