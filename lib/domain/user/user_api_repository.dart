@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 import 'package:blog/core/http_connector.dart';
-import 'package:blog/domain/local/user_model.dart';
+import 'package:blog/core/util/response_util.dart';
+import 'package:blog/domain/local/user_session_model.dart';
 import 'package:blog/domain/user/user.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
-import 'package:blog/core/util/response_util.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -44,7 +44,7 @@ class UserApiRepository {
 
     // 6. AuthProvider에 로긴 정보 저장
     User user = User.fromJson(responseDto.data);
-    UserModel.login(user, jwtToken);
+    UserSession.login(user, jwtToken);
 
     return responseDto; // ResponseDto 응답
   }

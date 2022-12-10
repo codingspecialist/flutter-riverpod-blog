@@ -1,5 +1,5 @@
 import 'package:blog/core/constant/routers.dart';
-import 'package:blog/domain/local/user_model.dart';
+import 'package:blog/domain/local/user_session_model.dart';
 import 'package:blog/domain/user/user_api_repository.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
@@ -79,7 +79,7 @@ class UserController {
   }
 
   Future<void> logout() async {
-    await UserModel.logout();
+    await UserSession.logout();
     await Navigator.of(navigatorKey.currentContext!)
         .pushNamedAndRemoveUntil(Routers.loginForm, (route) => false);
   }

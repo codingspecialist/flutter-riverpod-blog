@@ -1,7 +1,7 @@
 import 'package:blog/controller/user_controller.dart';
 import 'package:blog/core/constant/routers.dart';
 import 'package:blog/core/constant/size.dart';
-import 'package:blog/domain/local/user_model.dart';
+import 'package:blog/domain/local/user_session_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -25,7 +25,7 @@ class _HomePageState extends ConsumerState<HomePage> {
       drawer: _navigation(),
       appBar: AppBar(
           title: Text(
-              "로그인한 유저 토큰 : ${UserModel.user == null ? "없음" : UserModel.user!.username}")),
+              "로그인한 유저 토큰 : ${UserSession.user == null ? "없음" : UserSession.user!.username}")),
       body: _buildBody(),
     );
   }
