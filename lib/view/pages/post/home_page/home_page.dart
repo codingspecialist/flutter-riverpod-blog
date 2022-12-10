@@ -1,9 +1,10 @@
 import 'package:blog/controller/user_controller.dart';
 import 'package:blog/core/constant/routers.dart';
 import 'package:blog/core/constant/size.dart';
-import 'package:blog/domain/local/user_session.dart';
-import 'package:blog/domain/post/post.dart';
+import 'package:blog/model/user_session.dart';
+import 'package:blog/model/post.dart';
 import 'package:blog/view/pages/post/home_page/home_page_view_model.dart';
+import 'package:blog/view/pages/post/home_page/model/home_page_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -33,18 +34,18 @@ class HomePage extends StatelessWidget {
   Widget _buildBody() {
     return Consumer(
       builder: (context, ref, child) {
-        List<Post> posts = ref.watch(homePageViewModel);
-        if (posts.isEmpty) {
+        HomePageModel? model = ref.watch(homePageViewModel);
+        if (model == null) {
           return const Center(child: CircularProgressIndicator());
         } else {
           return ListView.separated(
-            itemCount: posts.length,
+            itemCount: model.posts.length,
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {},
                 child: ListTile(
-                  leading: Text("${posts[index].id}"),
-                  title: Text("${posts[index].content}"),
+                  leading: Text("${model.posts[index].id}"),
+                  title: Text("${model.posts[index].content}"),
                 ),
               );
             },

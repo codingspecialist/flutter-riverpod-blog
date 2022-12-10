@@ -1,6 +1,6 @@
 import 'package:blog/core/constant/routers.dart';
-import 'package:blog/domain/local/local_service.dart';
-import 'package:blog/domain/local/user_session.dart';
+import 'package:blog/service/local_service.dart';
+import 'package:blog/model/user_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

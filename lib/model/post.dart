@@ -1,4 +1,4 @@
-import 'package:blog/domain/user/user.dart';
+import 'package:blog/model/user.dart';
 import 'package:intl/intl.dart';
 
 class Post {

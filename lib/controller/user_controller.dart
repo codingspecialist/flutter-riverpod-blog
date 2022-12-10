@@ -1,6 +1,6 @@
 import 'package:blog/core/constant/routers.dart';
-import 'package:blog/domain/local/user_session.dart';
-import 'package:blog/domain/user/user_service.dart';
+import 'package:blog/model/user_session.dart';
+import 'package:blog/service/user_service.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:flutter/material.dart';

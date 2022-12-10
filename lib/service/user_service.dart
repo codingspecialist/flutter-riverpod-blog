@@ -1,9 +1,9 @@
 import 'dart:convert';
 
 import 'package:blog/core/http_connector.dart';
-import 'package:blog/core/util/response_util.dart';
-import 'package:blog/domain/local/user_session.dart';
-import 'package:blog/domain/user/user.dart';
+import 'package:blog/core/util/parsing_util.dart';
+import 'package:blog/model/user_session.dart';
+import 'package:blog/model/user.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:http/http.dart';
@@ -20,6 +20,7 @@ class UserService {
   Future<ResponseDto> join(JoinReqDto joinReqDto) async {
     String requestBody = jsonEncode(joinReqDto.toJson());
     Response response = await HttpConnector().post("/join", requestBody);
+
     return toResponseDto(response); // ResponseDto 응답
   }
 

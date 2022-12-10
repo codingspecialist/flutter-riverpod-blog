@@ -1,7 +1,7 @@
 import 'package:blog/core/http_connector.dart';
-import 'package:blog/core/util/response_util.dart';
-import 'package:blog/domain/local/user_session.dart';
-import 'package:blog/domain/user/user.dart';
+import 'package:blog/core/util/parsing_util.dart';
+import 'package:blog/model/user_session.dart';
+import 'package:blog/model/user.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
@@ -20,14 +20,18 @@ class LocalService {
     Logger().d("jwt init");
     final prefs = await SharedPreferences.getInstance();
     final deviceJwtToken = prefs.getString("jwtToken");
-    Logger().d(deviceJwtToken);
     if (deviceJwtToken != null) {
       Response response =
-          await HttpConnector().get("/user/jwtToken", jwtToken: deviceJwtToken);
+          await HttpConnector().get("/jwtToken", jwtToken: deviceJwtToken);
       ResponseDto responseDto = toResponseDto(response);
 
-      User user = User.fromJson(responseDto.data);
-      UserSession.login(user, deviceJwtToken);
+      if (responseDto.code == 1) {
+        User user = User.fromJson(responseDto.data);
+        UserSession.login(user, deviceJwtToken);
+      } else {
+        Logger().d("토큰이 만료됨");
+        UserSession.logout();
+      }
     }
   }
 

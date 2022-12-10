@@ -9,5 +9,6 @@ ResponseDto toResponseDto(Response response) {
 
   ResponseDto responseDto =
       ResponseDto.fromJson(responseMap); // Map -> Dart Class
+
   return responseDto;
 }
