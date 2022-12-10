@@ -1,12 +1,12 @@
 import 'package:blog/core/constant/routers.dart';
-import 'package:blog/domain/local/local_repository.dart';
-import 'package:blog/domain/local/user_session_model.dart';
+import 'package:blog/domain/local/local_service.dart';
+import 'package:blog/domain/local/user_session.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await LocalRepository().initShardJwtToken();
+  await LocalService().initShardJwtToken();
   // 자동 로그인시 필요
   runApp(
     const ProviderScope(

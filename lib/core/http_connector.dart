@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
@@ -15,9 +17,9 @@ class HttpConnector {
     if (jwtToken != null) {
       headers["Authorization"] = jwtToken;
     }
-    Logger().d("${headers}");
     Uri uri = Uri.parse("${host}${path}");
     Response response = await Client().get(uri, headers: headers);
+
     return response;
   }
 

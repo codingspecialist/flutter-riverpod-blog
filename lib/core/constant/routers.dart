@@ -1,10 +1,10 @@
-import 'package:blog/view/pages/post/detail_page.dart';
-import 'package:blog/view/pages/post/home_page.dart';
-import 'package:blog/view/pages/post/update_page.dart';
-import 'package:blog/view/pages/post/write_page.dart';
-import 'package:blog/view/pages/user/join_page.dart';
-import 'package:blog/view/pages/user/login_page.dart';
-import 'package:blog/view/pages/user/user_info_page.dart';
+import 'package:blog/view/pages/post/detail_page/detail_page.dart';
+import 'package:blog/view/pages/post/home_page/home_page.dart';
+import 'package:blog/view/pages/post/update_page/update_page.dart';
+import 'package:blog/view/pages/post/write_page/write_page.dart';
+import 'package:blog/view/pages/user/join_page/join_page.dart';
+import 'package:blog/view/pages/user/login_page/login_page.dart';
+import 'package:blog/view/pages/user/user_info_page/user_info_page.dart';
 import 'package:flutter/cupertino.dart';
 
 class Routers {
@@ -22,7 +22,7 @@ Map<String, Widget Function(BuildContext)> getRouters() {
   return {
     Routers.joinForm: (context) => JoinPage(),
     Routers.loginForm: (context) => LoginPage(),
-    Routers.home: (context) => const HomePage(),
+    Routers.home: (context) => HomePage(),
     Routers.detail: (context) => const DetailPage(),
     Routers.updateForm: (context) => UpdatePage(),
     Routers.writeForm: (context) => WritePage(),

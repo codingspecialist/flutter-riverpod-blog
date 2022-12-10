@@ -2,19 +2,18 @@ import 'dart:convert';
 
 import 'package:blog/core/http_connector.dart';
 import 'package:blog/core/util/response_util.dart';
-import 'package:blog/domain/local/user_session_model.dart';
+import 'package:blog/domain/local/user_session.dart';
 import 'package:blog/domain/user/user.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:http/http.dart';
-import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class UserApiRepository {
-  static final UserApiRepository _instance = UserApiRepository._single();
+class UserService {
+  static final UserService _instance = UserService._single();
 
-  UserApiRepository._single();
-  factory UserApiRepository() {
+  UserService._single();
+  factory UserService() {
     return _instance;
   }
 
@@ -33,7 +32,6 @@ class UserApiRepository {
 
     // 3. 토큰 받기
     String jwtToken = response.headers["authorization"].toString();
-    Logger().d(jwtToken);
 
     // 4. 토큰을 디바이스에 저장
     final prefs = await SharedPreferences.getInstance();

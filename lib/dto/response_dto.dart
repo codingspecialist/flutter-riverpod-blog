@@ -1,7 +1,7 @@
 class ResponseDto {
   final int? code;
   final String? msg;
-  final dynamic data;
+  final dynamic data; // JsonArray [], JsonObject {}
 
   ResponseDto({
     this.code,

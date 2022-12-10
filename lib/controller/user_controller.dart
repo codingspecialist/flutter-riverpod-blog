@@ -1,28 +1,31 @@
 import 'package:blog/core/constant/routers.dart';
-import 'package:blog/domain/local/user_session_model.dart';
-import 'package:blog/domain/user/user_api_repository.dart';
+import 'package:blog/domain/local/user_session.dart';
+import 'package:blog/domain/user/user_service.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:flutter/material.dart';
 
 /**
  * View -> Controller 요청
- * Controller -> Repository 요청
- * Repository -> 스프링서버 요청
+ * Controller -> Service 요청
+ * Service -> 스프링서버 요청
  * Controller -> ViewModel 응답
  * 
  * 
  * Controller 책임 : View요청 받고, 
- *                  Repository에게 통신요청하고, 
- *                  비지니스 로직 처리(페이지이동, 알림창, ViewModel 데이터 담기)
- * Repository 책임 : 통신하고, 파싱하기
- * ViewModel 책임 : 데이터 담기
+ *                  Service에게 통신요청하고, 
+ *                  화면 비지니스 로직 처리(페이지이동, 알림창, ViewModel 데이터 담기)
+ * Service 책임 : 통신하고, 파싱하고, 데이터 관련 처리
+ * ViewModel 책임 : 뷰 데이터 상태 관리
+ * model 책임 : ViewModel 데이터 전담
+ * Provider 책임 : 전역 뷰 관련 상태 관리
+ * static 클래스 : 전역 데이터 관리 (세션 같은 것)
  */
 
 class UserController {
   final mContext = navigatorKey.currentContext;
   static final UserController _instance = UserController._single();
-  final UserApiRepository userApiRepository = UserApiRepository();
+  final UserService userService = UserService();
 
   UserController._single();
   factory UserController() {
@@ -38,7 +41,7 @@ class UserController {
         JoinReqDto(username: username, password: password, email: email);
 
     // 2. 통신 요청
-    ResponseDto responseDto = await userApiRepository.join(joinReqDto);
+    ResponseDto responseDto = await userService.join(joinReqDto);
 
     // 3. 비지니스 로직 처리
     if (responseDto.code == 1) {
@@ -66,10 +69,10 @@ class UserController {
         LoginReqDto(username: username, password: password);
 
     // 2. 통신 요청
-    ResponseDto responseDto = await userApiRepository.login(loginReqDto);
+    ResponseDto responseDto = await userService.login(loginReqDto);
     //3. 비지니스 로직 처리
     if (responseDto.code == 1) {
-      await Navigator.of(navigatorKey.currentContext!)
+      Navigator.of(navigatorKey.currentContext!)
           .pushNamedAndRemoveUntil(Routers.home, (route) => false);
     } else {
       ScaffoldMessenger.of(mContext!).showSnackBar(
@@ -80,7 +83,7 @@ class UserController {
 
   Future<void> logout() async {
     await UserSession.logout();
-    await Navigator.of(navigatorKey.currentContext!)
+    Navigator.of(navigatorKey.currentContext!)
         .pushNamedAndRemoveUntil(Routers.loginForm, (route) => false);
   }
 }
