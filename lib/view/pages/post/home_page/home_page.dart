@@ -10,14 +10,17 @@ import 'package:logger/logger.dart';
 class HomePage extends ConsumerWidget {
   HomePage({Key? key}) : super(key: key);
 
+  final scaffoldKey = GlobalKey<ScaffoldState>();
   final refreshKey = GlobalKey<RefreshIndicatorState>();
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     PostController postCT = ref.read(postController);
     Logger().d("homePage 빌드");
 
     return Scaffold(
-      drawer: const CustomNavigation(),
+      key: scaffoldKey,
+      drawer: CustomNavigation(scaffoldKey),
       appBar: AppBar(
           title: Text(
               "로그인한 유저 토큰 : ${UserSession.user == null ? "없음" : UserSession.user!.username}")),

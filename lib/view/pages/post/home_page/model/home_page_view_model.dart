@@ -5,7 +5,6 @@ import 'package:blog/service/post_service.dart';
 import 'package:blog/view/pages/post/home_page/model/home_page_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
 
 final homePageViewModel =
     StateNotifierProvider.autoDispose<HomePageViewModel, HomePageModel?>((ref) {
@@ -36,6 +35,11 @@ class HomePageViewModel extends StateNotifier<HomePageModel?> {
   void deletePost(int postId) {
     List<Post> result =
         state!.posts.where((post) => post.id != postId).toList();
+    state = HomePageModel(result);
+  }
+
+  void addPost(Post post) {
+    List<Post> result = [post, ...state!.posts];
     state = HomePageModel(result);
   }
 }

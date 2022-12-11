@@ -5,7 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class CustomNavigation extends ConsumerWidget {
-  const CustomNavigation({Key? key}) : super(key: key);
+  final scaffoldKey;
+  const CustomNavigation(this.scaffoldKey, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -23,6 +24,7 @@ class CustomNavigation extends ConsumerWidget {
             children: [
               TextButton(
                 onPressed: () {
+                  scaffoldKey.currentState!.openEndDrawer();
                   postCT.moveWriteForm();
                 },
                 child: const Text(
@@ -37,6 +39,7 @@ class CustomNavigation extends ConsumerWidget {
               const Divider(),
               TextButton(
                 onPressed: () {
+                  scaffoldKey.currentState!.openEndDrawer();
                   userCT.moveUserInfo();
                 },
                 child: const Text(

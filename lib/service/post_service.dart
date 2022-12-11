@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:blog/core/http_connector.dart';
 import 'package:blog/core/util/parsing_util.dart';
+import 'package:blog/dto/post_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:blog/model/post.dart';
 import 'package:http/http.dart';
@@ -21,8 +24,6 @@ class PostService {
       List<dynamic> mapList = responseDto.data; // dynamic
       List<Post> postList = mapList.map((e) => Post.fromJson(e)).toList();
       responseDto.data = postList;
-    } else {
-      responseDto.data = [];
     }
 
     return responseDto;
@@ -33,8 +34,6 @@ class PostService {
     ResponseDto responseDto = toResponseDto(response);
     if (responseDto.code == 1) {
       responseDto.data = Post.fromJson(responseDto.data);
-    } else {
-      responseDto.data = {};
     }
     return responseDto;
   }
@@ -42,5 +41,15 @@ class PostService {
   Future<ResponseDto> deleteById(int postId) async {
     Response response = await httpConnector.delete("/post/${postId}");
     return toResponseDto(response);
+  }
+
+  Future<ResponseDto> write(PostWriteReqDto postWriteReqDto) async {
+    String requestBody = jsonEncode(postWriteReqDto.toJson());
+    Response response = await httpConnector.post("/post", requestBody);
+    ResponseDto responseDto = toResponseDto(response);
+    if (responseDto.code == 1) {
+      responseDto.data = Post.fromJson(responseDto.data);
+    }
+    return responseDto;
   }
 }
