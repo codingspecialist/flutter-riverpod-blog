@@ -8,6 +8,9 @@
 - viewModel의 model, provider의 model 이 있음.
 - ResponseDto (통신) -> ResponeDto의 data값 파싱해서 다시 채우기 -> ViewModel의 model에게 전달!!
 
+### 이슈
+- flutter_secure_storage 에 jwt Token 저장 (sdk 33, min 21)
+
 ### 남은 일정
 - 게시글 수정
 

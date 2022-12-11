@@ -1,5 +1,6 @@
 import 'package:blog/core/constant/routers.dart';
 import 'package:blog/dto/response_dto.dart';
+import 'package:blog/model/post.dart';
 import 'package:blog/service/post_service.dart';
 import 'package:blog/view/pages/post/detail_page/model/detail_page_model.dart';
 import 'package:flutter/material.dart';
@@ -25,5 +26,9 @@ class DetailPageViewModel extends StateNotifier<DetailPageModel?> {
         const SnackBar(content: Text("잘못된 요청입니다.")),
       );
     }
+  }
+
+  void updatePost(Post post) {
+    state = DetailPageModel(post);
   }
 }

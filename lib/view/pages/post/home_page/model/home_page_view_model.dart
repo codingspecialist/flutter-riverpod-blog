@@ -33,13 +33,18 @@ class HomePageViewModel extends StateNotifier<HomePageModel?> {
 
   // state를 변경해야함. 그 안에 내용을 별개로 변경한다고 뷰에 반영안됨.
   void deletePost(int postId) {
-    List<Post> result =
-        state!.posts.where((post) => post.id != postId).toList();
-    state = HomePageModel(result);
+    List<Post> posts = state!.posts.where((e) => e.id != postId).toList();
+    state = HomePageModel(posts);
   }
 
   void addPost(Post post) {
-    List<Post> result = [post, ...state!.posts];
-    state = HomePageModel(result);
+    List<Post> posts = [post, ...state!.posts];
+    state = HomePageModel(posts);
+  }
+
+  void updatePost(Post post) {
+    List<Post> posts =
+        state!.posts.map((e) => e.id == post.id ? post : e).toList();
+    state = HomePageModel(posts);
   }
 }

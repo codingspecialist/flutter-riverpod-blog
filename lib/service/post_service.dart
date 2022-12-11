@@ -52,4 +52,14 @@ class PostService {
     }
     return responseDto;
   }
+
+  Future<ResponseDto> update(int id, PostUpdateReqDto postUpdateReqDto) async {
+    String requestBody = jsonEncode(postUpdateReqDto.toJson());
+    Response response = await httpConnector.put("/post/$id", requestBody);
+    ResponseDto responseDto = await toResponseDto(response);
+    if (responseDto.code == 1) {
+      responseDto.data = Post.fromJson(responseDto.data);
+    }
+    return responseDto;
+  }
 }
