@@ -10,8 +10,9 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  static final UserService _instance = UserService._single();
+  final HttpConnector httpConnector = HttpConnector();
 
+  static final UserService _instance = UserService._single();
   UserService._single();
   factory UserService() {
     return _instance;
@@ -19,7 +20,7 @@ class UserService {
 
   Future<ResponseDto> join(JoinReqDto joinReqDto) async {
     String requestBody = jsonEncode(joinReqDto.toJson());
-    Response response = await HttpConnector().post("/join", requestBody);
+    Response response = await httpConnector.post("/join", requestBody);
 
     return toResponseDto(response); // ResponseDto 응답
   }
@@ -29,7 +30,7 @@ class UserService {
     String requestBody = jsonEncode(loginReqDto.toJson());
 
     // 2. 통신 시작
-    Response response = await HttpConnector().post("/login", requestBody);
+    Response response = await httpConnector.post("/login", requestBody);
 
     // 3. 토큰 받기
     String jwtToken = response.headers["authorization"].toString();

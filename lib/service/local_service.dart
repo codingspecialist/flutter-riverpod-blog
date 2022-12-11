@@ -8,8 +8,9 @@ import 'package:logger/logger.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LocalService {
-  static final LocalService _instance = LocalService._single();
+  final HttpConnector httpConnector = HttpConnector();
 
+  static final LocalService _instance = LocalService._single();
   LocalService._single();
   factory LocalService() {
     Logger().d("LocalRepository 생성자");
@@ -21,7 +22,7 @@ class LocalService {
     final prefs = await SharedPreferences.getInstance();
     final deviceJwtToken = prefs.getString("jwtToken");
     if (deviceJwtToken != null) {
-      Response response = await HttpConnector().get("/jwtToken");
+      Response response = await httpConnector.get("/jwtToken");
       ResponseDto responseDto = toResponseDto(response);
 
       if (responseDto.code == 1) {

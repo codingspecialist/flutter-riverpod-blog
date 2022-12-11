@@ -7,6 +7,7 @@ import 'package:logger/logger.dart';
 class HttpConnector {
   final host = "http://192.168.0.2:8080";
   final headers = {"Content-Type": "application/json; charset=utf-8"};
+
   static final HttpConnector _instance = HttpConnector._single();
   factory HttpConnector() {
     Logger().d("HttpConnector 생성자");

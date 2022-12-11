@@ -4,24 +4,19 @@ import 'package:blog/service/post_service.dart';
 import 'package:blog/view/pages/post/home_page/model/home_page_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:logger/logger.dart';
 
 final homePageViewModel =
     StateNotifierProvider.autoDispose<HomePageViewModel, HomePageModel?>((ref) {
-  ref.onDispose(
-    () {
-      Logger().d("HomePageViewModel 종료됨");
-    },
-  );
   return HomePageViewModel(null)..refresh();
 });
 
 class HomePageViewModel extends StateNotifier<HomePageModel?> {
+  final PostService postService = PostService();
   final mContext = navigatorKey.currentContext;
   HomePageViewModel(super.state);
 
   Future<void> refresh() async {
-    ResponseDto responseDto = await PostService().findAll();
+    ResponseDto responseDto = await postService.findAll();
     if (responseDto.code == 1) {
       HomePageModel homePageModel = HomePageModel(responseDto.data);
       state = homePageModel;

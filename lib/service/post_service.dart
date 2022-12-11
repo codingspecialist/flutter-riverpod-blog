@@ -7,6 +7,8 @@ import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
 class PostService {
+  final HttpConnector httpConnector = HttpConnector();
+
   static final PostService _instance = PostService._single();
   PostService._single();
   factory PostService() {
@@ -15,7 +17,7 @@ class PostService {
 
   Future<ResponseDto> findAll() async {
     Logger().d("유저 세션 토큰 : ${UserSession.jwtToken}");
-    Response response = await HttpConnector().get("/post");
+    Response response = await httpConnector.get("/post");
 
     ResponseDto responseDto = toResponseDto(response);
     if (responseDto.code == 1) {
