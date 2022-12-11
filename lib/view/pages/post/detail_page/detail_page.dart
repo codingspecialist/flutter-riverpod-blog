@@ -1,4 +1,5 @@
 import 'package:blog/controller/post_controller.dart';
+import 'package:blog/model/user_session.dart';
 import 'package:blog/view/pages/post/detail_page/model/detail_page_model.dart';
 import 'package:blog/view/pages/post/detail_page/model/detail_page_view_model.dart';
 import 'package:flutter/material.dart';
@@ -32,21 +33,7 @@ class DetailPage extends ConsumerWidget {
             style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 35),
           ),
           const Divider(),
-          Row(
-            children: [
-              ElevatedButton(
-                onPressed: () async {
-                  postCT.deletePost(model.post.id);
-                },
-                child: const Text("삭제"),
-              ),
-              const SizedBox(width: 10),
-              ElevatedButton(
-                onPressed: () {},
-                child: const Text("수정"),
-              ),
-            ],
-          ),
+          _buildDeleteAndUpdateButton(postCT, model),
           Expanded(
             child: SingleChildScrollView(
               child: Text(model.post.title),
@@ -55,5 +42,28 @@ class DetailPage extends ConsumerWidget {
         ],
       ),
     );
+  }
+
+  Widget _buildDeleteAndUpdateButton(
+      PostController postCT, DetailPageModel model) {
+    if (model.post.user.id == UserSession.user!.id) {
+      return Row(
+        children: [
+          ElevatedButton(
+            onPressed: () async {
+              postCT.deletePost(model.post.id);
+            },
+            child: const Text("삭제"),
+          ),
+          const SizedBox(width: 10),
+          ElevatedButton(
+            onPressed: () {},
+            child: const Text("수정"),
+          ),
+        ],
+      );
+    } else {
+      return const SizedBox();
+    }
   }
 }
