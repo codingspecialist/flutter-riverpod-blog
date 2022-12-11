@@ -2,9 +2,7 @@ import 'package:blog/core/http_connector.dart';
 import 'package:blog/core/util/parsing_util.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:blog/model/post.dart';
-import 'package:blog/model/user_session.dart';
 import 'package:http/http.dart';
-import 'package:logger/logger.dart';
 
 class PostService {
   final HttpConnector httpConnector = HttpConnector();
@@ -39,5 +37,10 @@ class PostService {
       responseDto.data = {};
     }
     return responseDto;
+  }
+
+  Future<ResponseDto> deleteById(int postId) async {
+    Response response = await httpConnector.delete("/post/${postId}");
+    return toResponseDto(response);
   }
 }

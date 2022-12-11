@@ -7,20 +7,19 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final detailPageViewModel = StateNotifierProvider.family
     .autoDispose<DetailPageViewModel, DetailPageModel?, int>((ref, postId) {
-  return DetailPageViewModel(null, postId)..refresh();
+  return DetailPageViewModel(null, postId)..initViewModel();
 });
 
 class DetailPageViewModel extends StateNotifier<DetailPageModel?> {
   final PostService postService = PostService();
-  final int postId;
+  final int postId; // param
   final mContext = navigatorKey.currentContext;
   DetailPageViewModel(super.state, this.postId);
 
-  Future<void> refresh() async {
+  Future<void> initViewModel() async {
     ResponseDto responseDto = await postService.findById(postId);
     if (responseDto.code == 1) {
-      DetailPageModel detailPageModel = DetailPageModel(responseDto.data);
-      state = detailPageModel;
+      state = DetailPageModel(responseDto.data);
     } else {
       ScaffoldMessenger.of(mContext!).showSnackBar(
         const SnackBar(content: Text("잘못된 요청입니다.")),

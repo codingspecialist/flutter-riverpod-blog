@@ -1,13 +1,8 @@
 import 'package:blog/controller/post_controller.dart';
-import 'package:blog/controller/user_controller.dart';
-import 'package:blog/core/constant/routers.dart';
-import 'package:blog/core/constant/size.dart';
 import 'package:blog/model/user_session.dart';
 import 'package:blog/view/components/custom_navigation.dart';
-import 'package:blog/view/pages/post/detail_page/model/detail_page_model.dart';
-import 'package:blog/view/pages/post/detail_page/model/detail_page_view_model.dart';
-import 'package:blog/view/pages/post/home_page/model/home_page_view_model.dart';
 import 'package:blog/view/pages/post/home_page/model/home_page_model.dart';
+import 'package:blog/view/pages/post/home_page/model/home_page_view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
@@ -29,7 +24,7 @@ class HomePage extends ConsumerWidget {
       body: RefreshIndicator(
         key: refreshKey,
         onRefresh: () async {
-          postCT.findAll();
+          postCT.refreshPage();
         },
         child: _buildBody(postCT),
       ),
@@ -50,11 +45,11 @@ class HomePage extends ConsumerWidget {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  postCT.moveDetail(model.posts[index].id!);
+                  postCT.moveDetail(model.posts[index].id);
                 },
                 child: ListTile(
                   leading: Text("${model.posts[index].id}"),
-                  title: Text("${model.posts[index].content}"),
+                  title: Text(model.posts[index].content),
                 ),
               );
             },

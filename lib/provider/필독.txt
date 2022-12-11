@@ -1,0 +1,2 @@
+provider는 알림이나, 전역적으로 view 들이 반응해야 할 때 사용될 provider이다.
+ex) StreamProvider, StateNotifierProvider

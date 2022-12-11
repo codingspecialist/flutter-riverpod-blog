@@ -2,20 +2,20 @@ import 'package:blog/model/user.dart';
 import 'package:intl/intl.dart';
 
 class Post {
-  final int? id;
-  final String? title;
-  final String? content;
-  final User? user;
-  final DateTime? created;
-  final DateTime? updated;
+  final int id;
+  final String title;
+  final String content;
+  final User user;
+  final DateTime created;
+  final DateTime updated;
 
   Post({
-    this.id,
-    this.title,
-    this.content,
-    this.user,
-    this.created,
-    this.updated,
+    required this.id,
+    required this.title,
+    required this.content,
+    required this.user,
+    required this.created,
+    required this.updated,
   });
 
   Map<String, dynamic> toJson() => {

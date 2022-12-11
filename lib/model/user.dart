@@ -1,18 +1,18 @@
 import 'package:intl/intl.dart';
 
 class User {
-  final int? id;
-  final String? username;
-  final String? email;
-  final DateTime? created;
-  final DateTime? updated;
+  final int id;
+  final String username;
+  final String email;
+  final DateTime created;
+  final DateTime updated;
 
   User({
-    this.id,
-    this.username,
-    this.email,
-    this.created,
-    this.updated,
+    required this.id,
+    required this.username,
+    required this.email,
+    required this.created,
+    required this.updated,
   });
 
   // 통신을 위해서 json 처럼 생긴 문자열 {"id":1} => Dart 오브젝트

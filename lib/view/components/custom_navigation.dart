@@ -1,5 +1,5 @@
+import 'package:blog/controller/post_controller.dart';
 import 'package:blog/controller/user_controller.dart';
-import 'package:blog/core/constant/routers.dart';
 import 'package:blog/core/constant/size.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,6 +10,7 @@ class CustomNavigation extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     UserController userCT = ref.read(userController);
+    PostController postCT = ref.read(postController);
     return Container(
       width: getDrawerWidth(context),
       height: double.infinity,
@@ -22,7 +23,7 @@ class CustomNavigation extends ConsumerWidget {
             children: [
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, Routers.writeForm);
+                  postCT.moveWriteForm();
                 },
                 child: const Text(
                   "글쓰기",
@@ -36,7 +37,7 @@ class CustomNavigation extends ConsumerWidget {
               const Divider(),
               TextButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, Routers.userInfo);
+                  userCT.moveUserInfo();
                 },
                 child: const Text(
                   "회원정보보기",
@@ -49,8 +50,8 @@ class CustomNavigation extends ConsumerWidget {
               ),
               const Divider(),
               TextButton(
-                onPressed: () async {
-                  await userCT.logout();
+                onPressed: () {
+                  userCT.logout();
                 },
                 child: const Text(
                   "로그아웃",

@@ -88,4 +88,8 @@ class UserController {
     await Navigator.of(navigatorKey.currentContext!)
         .pushNamedAndRemoveUntil(Routers.loginForm, (route) => false);
   }
+
+  void moveUserInfo() {
+    Navigator.pushNamed(mContext!, Routers.userInfo);
+  }
 }
