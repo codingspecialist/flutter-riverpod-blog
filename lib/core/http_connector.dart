@@ -16,7 +16,7 @@ class HttpConnector {
   HttpConnector._single();
 
   Future<Response> get(String path) async {
-    Map<String, String> requestHeader = UserSession.getTokenHeader(headers);
+    Map<String, String> requestHeader = UserSession.getJwtTokenHeader(headers);
     Uri uri = Uri.parse("${host}${path}");
     Response response = await Client().get(uri, headers: requestHeader);
 
@@ -24,14 +24,14 @@ class HttpConnector {
   }
 
   Future<Response> delete(String path) async {
-    Map<String, String> requestHeader = UserSession.getTokenHeader(headers);
+    Map<String, String> requestHeader = UserSession.getJwtTokenHeader(headers);
     Uri uri = Uri.parse("${host}${path}");
     Response response = await Client().delete(uri, headers: requestHeader);
     return response;
   }
 
   Future<Response> put(String path, String body) async {
-    Map<String, String> requestHeader = UserSession.getTokenHeader(headers);
+    Map<String, String> requestHeader = UserSession.getJwtTokenHeader(headers);
     Uri uri = Uri.parse("${host}${path}");
     Response response =
         await Client().put(uri, body: body, headers: requestHeader);
@@ -39,7 +39,7 @@ class HttpConnector {
   }
 
   Future<Response> post(String path, String body) async {
-    Map<String, String> requestHeader = UserSession.getTokenHeader(headers);
+    Map<String, String> requestHeader = UserSession.getJwtTokenHeader(headers);
     Uri uri = Uri.parse("${host}${path}");
     Response response =
         await Client().post(uri, body: body, headers: requestHeader);

@@ -84,7 +84,7 @@ class UserController {
   }
 
   Future<void> logout() async {
-    await UserSession.logout();
+    await UserSession.removeAuthentication();
     await Navigator.of(navigatorKey.currentContext!)
         .pushNamedAndRemoveUntil(Move.loginPage, (route) => false);
   }

@@ -23,15 +23,16 @@ class LocalService {
     Logger().d("jwt init");
     String? deviceJwtToken = await storage.read(key: "jwtToken");
     if (deviceJwtToken != null) {
+      UserSession.setJwtToken(deviceJwtToken);
       Response response = await httpConnector.get("/jwtToken");
       ResponseDto responseDto = toResponseDto(response);
 
       if (responseDto.code == 1) {
         User user = User.fromJson(responseDto.data);
-        UserSession.login(user, deviceJwtToken);
+        UserSession.successAuthentication(user);
       } else {
         Logger().d("토큰이 만료됨");
-        UserSession.logout();
+        UserSession.removeAuthentication();
       }
     }
   }

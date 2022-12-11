@@ -36,15 +36,16 @@ class UserService {
     // 3. 토큰 받기
     String jwtToken = response.headers["authorization"].toString();
 
-    // 4. 토큰을 디바이스에 저장
+    // 4. 토큰을 디바이스와 세션에 저장
     await storage.write(key: "jwtToken", value: jwtToken); // 자동 로그인시 필요
+    UserSession.setJwtToken(jwtToken);
 
     // 5. ResponseDto에서 User 꺼내기
     ResponseDto responseDto = toResponseDto(response);
 
     // 6. AuthProvider에 로긴 정보 저장
     User user = User.fromJson(responseDto.data);
-    UserSession.login(user, jwtToken);
+    UserSession.successAuthentication(user);
 
     return responseDto; // ResponseDto 응답
   }

@@ -8,13 +8,12 @@ class UserSession {
   static String? jwtToken;
   static bool isLogin = false;
 
-  static void login(User userParam, String jwtTokenParam) {
+  static void successAuthentication(User userParam) {
     user = userParam;
-    jwtToken = jwtTokenParam;
     isLogin = true;
   }
 
-  static Future<void> logout() async {
+  static Future<void> removeAuthentication() async {
     user = null;
     jwtToken = null;
     isLogin = false;
@@ -22,7 +21,11 @@ class UserSession {
     Logger().d("세션 종료 및 디바이스 토큰 삭제");
   }
 
-  static Map<String, String> getTokenHeader(Map<String, String> headers) {
+  static void setJwtToken(String token) {
+    jwtToken = token;
+  }
+
+  static Map<String, String> getJwtTokenHeader(Map<String, String> headers) {
     return UserSession.jwtToken == null
         ? headers
         : {...headers, "Authorization": UserSession.jwtToken!};
