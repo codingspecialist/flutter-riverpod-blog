@@ -7,7 +7,7 @@ import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-const storage = FlutterSecureStorage();
+const secureStorage = FlutterSecureStorage();
 
 class LocalService {
   final HttpConnector httpConnector = HttpConnector();
@@ -21,15 +21,15 @@ class LocalService {
 
   Future<void> fetchJwtToken() async {
     Logger().d("jwt init");
-    String? deviceJwtToken = await storage.read(key: "jwtToken");
+    String? deviceJwtToken = await secureStorage.read(key: "jwtToken");
     if (deviceJwtToken != null) {
-      UserSession.setJwtToken(deviceJwtToken);
-      Response response = await httpConnector.get("/jwtToken");
+      Response response =
+          await httpConnector.getInitSession("/jwtToken", deviceJwtToken);
       ResponseDto responseDto = toResponseDto(response);
 
       if (responseDto.code == 1) {
         User user = User.fromJson(responseDto.data);
-        UserSession.successAuthentication(user);
+        UserSession.successAuthentication(user, deviceJwtToken);
       } else {
         Logger().d("토큰이 만료됨");
         UserSession.removeAuthentication();
@@ -39,6 +39,6 @@ class LocalService {
 
   Future<void> fetchDeleteJwtToken() async {
     Logger().d("jwt remove");
-    await storage.delete(key: "jwtToken");
+    await secureStorage.delete(key: "jwtToken");
   }
 }
