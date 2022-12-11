@@ -9,7 +9,6 @@ import 'package:flutter/cupertino.dart';
 
 class Routers {
   static String home = "/home";
-  static String detail = "/detail";
   static String updateForm = "/updateForm";
   static String writeForm = "/writeForm";
   static String joinForm = "/joinForm";
@@ -23,7 +22,6 @@ Map<String, Widget Function(BuildContext)> getRouters() {
     Routers.joinForm: (context) => JoinPage(),
     Routers.loginForm: (context) => LoginPage(),
     Routers.home: (context) => HomePage(),
-    Routers.detail: (context) => const DetailPage(),
     Routers.updateForm: (context) => UpdatePage(),
     Routers.writeForm: (context) => WritePage(),
     Routers.userInfo: (context) => const UserInfoPage(),

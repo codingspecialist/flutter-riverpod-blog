@@ -16,7 +16,6 @@ class PostService {
   }
 
   Future<ResponseDto> findAll() async {
-    Logger().d("유저 세션 토큰 : ${UserSession.jwtToken}");
     Response response = await httpConnector.get("/post");
 
     ResponseDto responseDto = toResponseDto(response);
@@ -28,6 +27,17 @@ class PostService {
       responseDto.data = [];
     }
 
+    return responseDto;
+  }
+
+  Future<ResponseDto> findById(int postId) async {
+    Response response = await httpConnector.get("/post/${postId}");
+    ResponseDto responseDto = toResponseDto(response);
+    if (responseDto.code == 1) {
+      responseDto.data = Post.fromJson(responseDto.data);
+    } else {
+      responseDto.data = {};
+    }
     return responseDto;
   }
 }
