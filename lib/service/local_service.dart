@@ -5,7 +5,9 @@ import 'package:blog/model/user.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+const storage = FlutterSecureStorage();
 
 class LocalService {
   final HttpConnector httpConnector = HttpConnector();
@@ -19,8 +21,7 @@ class LocalService {
 
   Future<void> initShardJwtToken() async {
     Logger().d("jwt init");
-    final prefs = await SharedPreferences.getInstance();
-    final deviceJwtToken = prefs.getString("jwtToken");
+    String? deviceJwtToken = await storage.read(key: "jwtToken");
     if (deviceJwtToken != null) {
       Response response = await httpConnector.get("/jwtToken");
       ResponseDto responseDto = toResponseDto(response);
@@ -37,7 +38,6 @@ class LocalService {
 
   Future<void> removeShardJwtToken() async {
     Logger().d("jwt remove");
-    final prefs = await SharedPreferences.getInstance();
-    prefs.remove("jwtToken");
+    await storage.delete(key: "jwtToken");
   }
 }

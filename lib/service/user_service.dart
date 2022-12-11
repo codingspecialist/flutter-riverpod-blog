@@ -7,7 +7,8 @@ import 'package:blog/model/user.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:http/http.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+
+import 'local_service.dart';
 
 class UserService {
   final HttpConnector httpConnector = HttpConnector();
@@ -36,8 +37,7 @@ class UserService {
     String jwtToken = response.headers["authorization"].toString();
 
     // 4. 토큰을 디바이스에 저장
-    final prefs = await SharedPreferences.getInstance();
-    prefs.setString("jwtToken", jwtToken); // 자동 로그인시 필요
+    await storage.write(key: "jwtToken", value: jwtToken); // 자동 로그인시 필요
 
     // 5. ResponseDto에서 User 꺼내기
     ResponseDto responseDto = toResponseDto(response);
