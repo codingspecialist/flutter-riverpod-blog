@@ -48,4 +48,14 @@ class UserService {
 
     return responseDto; // ResponseDto 응답
   }
+
+  Future<ResponseDto> findById(int id) async {
+    Response response = await httpConnector.get("/user/$id");
+    ResponseDto responseDto = toResponseDto(response);
+    if (responseDto.code == 1) {
+      // 통신이 성공했을 때만 파싱을 해줘야 한다.
+      responseDto.data = User.fromJson(responseDto.data);
+    }
+    return responseDto;
+  }
 }

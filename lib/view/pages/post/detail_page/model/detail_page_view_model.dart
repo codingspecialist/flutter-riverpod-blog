@@ -17,13 +17,13 @@ class DetailPageViewModel extends StateNotifier<DetailPageModel?> {
   DetailPageViewModel(super.state, this.postId);
 
   Future<void> initViewModel() async {
-    ResponseDto? responseDto = await postService.findById(postId);
-    if (responseDto == null) {
+    ResponseDto responseDto = await postService.findById(postId);
+    if (responseDto.code == 1) {
+      state = DetailPageModel(responseDto.data);
+    } else {
       ScaffoldMessenger.of(mContext!).showSnackBar(
         const SnackBar(content: Text("잘못된 요청입니다.")),
       );
-    } else {
-      state = DetailPageModel(responseDto.data);
     }
   }
 }
