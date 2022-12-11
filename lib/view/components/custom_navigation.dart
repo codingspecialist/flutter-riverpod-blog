@@ -25,7 +25,7 @@ class CustomNavigation extends ConsumerWidget {
               TextButton(
                 onPressed: () {
                   scaffoldKey.currentState!.openEndDrawer();
-                  postCT.moveWriteForm();
+                  postCT.moveWritePage();
                 },
                 child: const Text(
                   "글쓰기",
@@ -40,7 +40,7 @@ class CustomNavigation extends ConsumerWidget {
               TextButton(
                 onPressed: () {
                   scaffoldKey.currentState!.openEndDrawer();
-                  userCT.moveUserInfo();
+                  userCT.moveUserInfoPage();
                 },
                 child: const Text(
                   "회원정보보기",

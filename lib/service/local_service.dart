@@ -19,7 +19,7 @@ class LocalService {
     return _instance;
   }
 
-  Future<void> initShardJwtToken() async {
+  Future<void> fetchJwtToken() async {
     Logger().d("jwt init");
     String? deviceJwtToken = await storage.read(key: "jwtToken");
     if (deviceJwtToken != null) {
@@ -36,7 +36,7 @@ class LocalService {
     }
   }
 
-  Future<void> removeShardJwtToken() async {
+  Future<void> fetchDeleteJwtToken() async {
     Logger().d("jwt remove");
     await storage.delete(key: "jwtToken");
   }

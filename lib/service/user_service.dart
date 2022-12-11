@@ -19,14 +19,14 @@ class UserService {
     return _instance;
   }
 
-  Future<ResponseDto> join(JoinReqDto joinReqDto) async {
+  Future<ResponseDto> fetchJoin(JoinReqDto joinReqDto) async {
     String requestBody = jsonEncode(joinReqDto.toJson());
     Response response = await httpConnector.post("/join", requestBody);
 
     return toResponseDto(response); // ResponseDto 응답
   }
 
-  Future<ResponseDto> login(LoginReqDto loginReqDto) async {
+  Future<ResponseDto> fetchLogin(LoginReqDto loginReqDto) async {
     // 1. json 변환
     String requestBody = jsonEncode(loginReqDto.toJson());
 
@@ -49,7 +49,7 @@ class UserService {
     return responseDto; // ResponseDto 응답
   }
 
-  Future<ResponseDto> findById(int id) async {
+  Future<ResponseDto> fetchUserInfo(int id) async {
     Response response = await httpConnector.get("/user/$id");
     ResponseDto responseDto = toResponseDto(response);
     if (responseDto.code == 1) {

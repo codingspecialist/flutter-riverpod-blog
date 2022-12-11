@@ -43,7 +43,7 @@ class WritePage extends ConsumerWidget {
               text: "글쓰기",
               funPageRoute: () async {
                 if (_formKey.currentState!.validate()) {
-                  postCT.write(
+                  postCT.writePost(
                       title: _title.text.trim(), content: _content.text.trim());
                 }
               },

@@ -1,4 +1,4 @@
-import 'package:blog/core/constant/routers.dart';
+import 'package:blog/core/constant/move.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:blog/model/user_session.dart';
 import 'package:blog/service/user_service.dart';
@@ -20,7 +20,8 @@ class UserInfoPageViewModel extends StateNotifier<UserInfoPageModel?> {
 
   Future<void> initViewModel() async {
     Logger().d("user id : ${UserSession.user!.id}");
-    ResponseDto responseDto = await userService.findById(UserSession.user!.id);
+    ResponseDto responseDto =
+        await userService.fetchUserInfo(UserSession.user!.id);
     if (responseDto.code == 1) {
       state = UserInfoPageModel(responseDto.data);
     } else {

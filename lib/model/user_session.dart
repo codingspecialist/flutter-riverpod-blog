@@ -18,7 +18,7 @@ class UserSession {
     user = null;
     jwtToken = null;
     isLogin = false;
-    await LocalService().removeShardJwtToken();
+    await LocalService().fetchDeleteJwtToken();
     Logger().d("세션 종료 및 디바이스 토큰 삭제");
   }
 

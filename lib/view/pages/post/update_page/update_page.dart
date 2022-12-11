@@ -49,7 +49,7 @@ class UpdatePage extends ConsumerWidget {
               text: "글 수정하기",
               funPageRoute: () async {
                 if (_formKey.currentState!.validate()) {
-                  postCT.update(
+                  postCT.updatePost(
                       id: post.id,
                       title: _title.text.trim(),
                       content: _content.text.trim());

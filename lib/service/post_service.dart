@@ -7,6 +7,12 @@ import 'package:blog/dto/response_dto.dart';
 import 'package:blog/model/post.dart';
 import 'package:http/http.dart';
 
+/*
+ * 메서드 이름 규칙 : 동사+명사
+ * 메서드 이름 짓는 법 : 컨트롤러에서 서버쪽으로 요청하는 것이기 때문에
+ * fetch + 동사(알파) + 모델명 + 자유(알파)
+ */
+
 class PostService {
   final HttpConnector httpConnector = HttpConnector();
 
@@ -16,7 +22,7 @@ class PostService {
     return _instance;
   }
 
-  Future<ResponseDto> findAll() async {
+  Future<ResponseDto> fetchPostList() async {
     Response response = await httpConnector.get("/post");
 
     ResponseDto responseDto = toResponseDto(response);
@@ -29,8 +35,8 @@ class PostService {
     return responseDto;
   }
 
-  Future<ResponseDto> findById(int postId) async {
-    Response response = await httpConnector.get("/post/${postId}");
+  Future<ResponseDto> fetchPost(int postId) async {
+    Response response = await httpConnector.get("/post/$postId");
     ResponseDto responseDto = toResponseDto(response);
     if (responseDto.code == 1) {
       responseDto.data = Post.fromJson(responseDto.data);
@@ -38,12 +44,12 @@ class PostService {
     return responseDto;
   }
 
-  Future<ResponseDto> deleteById(int postId) async {
-    Response response = await httpConnector.delete("/post/${postId}");
+  Future<ResponseDto> fetchDeletePost(int postId) async {
+    Response response = await httpConnector.delete("/post/$postId");
     return toResponseDto(response);
   }
 
-  Future<ResponseDto> write(PostWriteReqDto postWriteReqDto) async {
+  Future<ResponseDto> fetchWritePost(PostWriteReqDto postWriteReqDto) async {
     String requestBody = jsonEncode(postWriteReqDto.toJson());
     Response response = await httpConnector.post("/post", requestBody);
     ResponseDto responseDto = toResponseDto(response);
@@ -53,10 +59,11 @@ class PostService {
     return responseDto;
   }
 
-  Future<ResponseDto> update(int id, PostUpdateReqDto postUpdateReqDto) async {
+  Future<ResponseDto> fetchUpdatePost(
+      int id, PostUpdateReqDto postUpdateReqDto) async {
     String requestBody = jsonEncode(postUpdateReqDto.toJson());
     Response response = await httpConnector.put("/post/$id", requestBody);
-    ResponseDto responseDto = await toResponseDto(response);
+    ResponseDto responseDto = toResponseDto(response);
     if (responseDto.code == 1) {
       responseDto.data = Post.fromJson(responseDto.data);
     }

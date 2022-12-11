@@ -79,7 +79,7 @@ class JoinPage extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () {
-              userCT.loginForm(); // 추가
+              userCT.moveLoginPage(); // 추가
             },
             child: const Text("로그인 페이지로 이동"),
           ),

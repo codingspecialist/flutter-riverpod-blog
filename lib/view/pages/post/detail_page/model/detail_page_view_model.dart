@@ -1,4 +1,4 @@
-import 'package:blog/core/constant/routers.dart';
+import 'package:blog/core/constant/move.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:blog/model/post.dart';
 import 'package:blog/service/post_service.dart';
@@ -8,7 +8,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final detailPageViewModel = StateNotifierProvider.family
     .autoDispose<DetailPageViewModel, DetailPageModel?, int>((ref, postId) {
-  return DetailPageViewModel(null, postId)..initViewModel();
+  return DetailPageViewModel(null, postId)..notifyViewModel();
 });
 
 class DetailPageViewModel extends StateNotifier<DetailPageModel?> {
@@ -17,8 +17,8 @@ class DetailPageViewModel extends StateNotifier<DetailPageModel?> {
   final mContext = navigatorKey.currentContext;
   DetailPageViewModel(super.state, this.postId);
 
-  Future<void> initViewModel() async {
-    ResponseDto responseDto = await postService.findById(postId);
+  Future<void> notifyViewModel() async {
+    ResponseDto responseDto = await postService.fetchPost(postId);
     if (responseDto.code == 1) {
       state = DetailPageModel(responseDto.data);
     } else {
@@ -28,7 +28,7 @@ class DetailPageViewModel extends StateNotifier<DetailPageModel?> {
     }
   }
 
-  void updatePost(Post post) {
+  void notifyUpdate(Post post) {
     state = DetailPageModel(post);
   }
 }

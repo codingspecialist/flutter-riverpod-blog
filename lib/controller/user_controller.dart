@@ -1,4 +1,4 @@
-import 'package:blog/core/constant/routers.dart';
+import 'package:blog/core/constant/move.dart';
 import 'package:blog/model/user_session.dart';
 import 'package:blog/service/user_service.dart';
 import 'package:blog/dto/auth_req_dto.dart';
@@ -34,6 +34,14 @@ class UserController {
 
   UserController(this._ref);
 
+  Future<void> moveLoginPage() async {
+    Navigator.popAndPushNamed(mContext!, Move.loginPage);
+  }
+
+  Future<void> moveJoinPage() async {
+    Navigator.popAndPushNamed(mContext!, Move.joinPage);
+  }
+
   Future<void> join(
       {required String username,
       required String password,
@@ -43,25 +51,17 @@ class UserController {
         JoinReqDto(username: username, password: password, email: email);
 
     // 2. 통신 요청
-    ResponseDto responseDto = await userService.join(joinReqDto);
+    ResponseDto responseDto = await userService.fetchJoin(joinReqDto);
 
     // 3. 비지니스 로직 처리
     if (responseDto.code == 1) {
-      Navigator.popAndPushNamed(mContext!, Routers.loginForm);
+      Navigator.popAndPushNamed(mContext!, Move.loginPage);
       // 4. 응답된 데이터를 ViewModel에 반영해야 한다면 통신 성공시에 추가하기
     } else {
       ScaffoldMessenger.of(mContext!).showSnackBar(
         const SnackBar(content: Text("회원가입 실패")),
       );
     }
-  }
-
-  Future<void> loginForm() async {
-    Navigator.popAndPushNamed(mContext!, Routers.loginForm);
-  }
-
-  Future<void> joinForm() async {
-    Navigator.popAndPushNamed(mContext!, Routers.joinForm);
   }
 
   Future<void> login(
@@ -71,11 +71,11 @@ class UserController {
         LoginReqDto(username: username, password: password);
 
     // 2. 통신 요청
-    ResponseDto responseDto = await userService.login(loginReqDto);
+    ResponseDto responseDto = await userService.fetchLogin(loginReqDto);
     //3. 비지니스 로직 처리
     if (responseDto.code == 1) {
       Navigator.of(navigatorKey.currentContext!)
-          .pushNamedAndRemoveUntil(Routers.home, (route) => false);
+          .pushNamedAndRemoveUntil(Move.homePage, (route) => false);
     } else {
       ScaffoldMessenger.of(mContext!).showSnackBar(
         const SnackBar(content: Text("로그인 실패")),
@@ -86,10 +86,10 @@ class UserController {
   Future<void> logout() async {
     await UserSession.logout();
     await Navigator.of(navigatorKey.currentContext!)
-        .pushNamedAndRemoveUntil(Routers.loginForm, (route) => false);
+        .pushNamedAndRemoveUntil(Move.loginPage, (route) => false);
   }
 
-  void moveUserInfo() {
-    Navigator.pushNamed(mContext!, Routers.userInfo);
+  void moveUserInfoPage() {
+    Navigator.pushNamed(mContext!, Move.userInfoPage);
   }
 }

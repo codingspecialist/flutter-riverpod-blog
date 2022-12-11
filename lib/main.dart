@@ -1,4 +1,4 @@
-import 'package:blog/core/constant/routers.dart';
+import 'package:blog/core/constant/move.dart';
 import 'package:blog/service/local_service.dart';
 import 'package:blog/model/user_session.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await LocalService().initShardJwtToken();
+  await LocalService().fetchJwtToken();
   // 자동 로그인시 필요
   runApp(
     const ProviderScope(
@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
-      initialRoute: UserSession.isLogin ? Routers.home : Routers.loginForm,
+      initialRoute: UserSession.isLogin ? Move.homePage : Move.loginPage,
       routes: getRouters(),
     );
   }

@@ -58,7 +58,7 @@ class DetailPage extends ConsumerWidget {
           const SizedBox(width: 10),
           ElevatedButton(
             onPressed: () {
-              postCT.moveUpdateForm(model.post);
+              postCT.moveUpdatePage(model.post);
             },
             child: const Text("수정"),
           ),

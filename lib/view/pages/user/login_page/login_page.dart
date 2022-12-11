@@ -1,5 +1,5 @@
 import 'package:blog/controller/user_controller.dart';
-import 'package:blog/core/constant/routers.dart';
+import 'package:blog/core/constant/move.dart';
 import 'package:blog/core/util/validator_util.dart';
 import 'package:blog/view/components/custom_elevated_button.dart';
 import 'package:blog/view/components/custom_text_form_field.dart';
@@ -69,14 +69,14 @@ class LoginPage extends ConsumerWidget {
           ),
           TextButton(
             onPressed: () {
-              userCT.joinForm();
+              userCT.moveJoinPage();
             },
             child: const Text("아직 회원가입이 안되어 있나요?"),
           ),
           TextButton(
             onPressed: () {
               Navigator.of(context)
-                  .pushNamedAndRemoveUntil(Routers.home, (route) => false);
+                  .pushNamedAndRemoveUntil(Move.homePage, (route) => false);
             },
             child: const Text("홈페이지 로그인 없이 가보는 테스트"),
           ),

@@ -27,7 +27,7 @@ class HomePage extends ConsumerWidget {
       body: RefreshIndicator(
         key: refreshKey,
         onRefresh: () async {
-          postCT.refreshPage();
+          postCT.refreshHomePage();
         },
         child: _buildBody(postCT),
       ),
@@ -48,7 +48,7 @@ class HomePage extends ConsumerWidget {
             itemBuilder: (context, index) {
               return InkWell(
                 onTap: () {
-                  postCT.moveDetail(model.posts[index].id);
+                  postCT.moveDetailPage(model.posts[index].id);
                 },
                 child: ListTile(
                   leading: Text("${model.posts[index].id}"),
