@@ -4,6 +4,7 @@ import 'package:blog/service/user_service.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /**
  * View -> Controller 요청
@@ -22,15 +23,16 @@ import 'package:flutter/material.dart';
  * static 클래스 : 전역 데이터 관리 (세션 같은 것)
  */
 
+final userController = Provider<UserController>((ref) {
+  return UserController(ref);
+});
+
 class UserController {
   final mContext = navigatorKey.currentContext;
-  static final UserController _instance = UserController._single();
   final UserService userService = UserService();
+  final Ref _ref;
 
-  UserController._single();
-  factory UserController() {
-    return _instance;
-  }
+  UserController(this._ref);
 
   Future<void> join(
       {required String username,
@@ -83,7 +85,7 @@ class UserController {
 
   Future<void> logout() async {
     await UserSession.logout();
-    Navigator.of(navigatorKey.currentContext!)
+    await Navigator.of(navigatorKey.currentContext!)
         .pushNamedAndRemoveUntil(Routers.loginForm, (route) => false);
   }
 }

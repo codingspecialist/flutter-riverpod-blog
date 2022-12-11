@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:blog/model/user_session.dart';
 import 'package:http/http.dart';
 import 'package:logger/logger.dart';
 
@@ -13,40 +14,34 @@ class HttpConnector {
   }
   HttpConnector._single();
 
-  Future<Response> get(String path, {String? jwtToken}) async {
-    if (jwtToken != null) {
-      headers["Authorization"] = jwtToken;
-    }
+  Future<Response> get(String path) async {
+    Map<String, String> requestHeader = UserSession.getTokenHeader(headers);
     Uri uri = Uri.parse("${host}${path}");
-    Response response = await Client().get(uri, headers: headers);
+    Response response = await Client().get(uri, headers: requestHeader);
 
     return response;
   }
 
-  Future<Response> delete(String path, {String? jwtToken}) async {
-    if (jwtToken != null) {
-      headers["Authorization"] = jwtToken;
-    }
+  Future<Response> delete(String path) async {
+    Map<String, String> requestHeader = UserSession.getTokenHeader(headers);
     Uri uri = Uri.parse("${host}${path}");
-    Response response = await Client().delete(uri, headers: headers);
+    Response response = await Client().delete(uri, headers: requestHeader);
     return response;
   }
 
-  Future<Response> put(String path, String body, {String? jwtToken}) async {
-    if (jwtToken != null) {
-      headers["Authorization"] = jwtToken;
-    }
+  Future<Response> put(String path, String body) async {
+    Map<String, String> requestHeader = UserSession.getTokenHeader(headers);
     Uri uri = Uri.parse("${host}${path}");
-    Response response = await Client().put(uri, body: body, headers: headers);
+    Response response =
+        await Client().put(uri, body: body, headers: requestHeader);
     return response;
   }
 
-  Future<Response> post(String path, String body, {String? jwtToken}) async {
-    if (jwtToken != null) {
-      headers["Authorization"] = jwtToken;
-    }
+  Future<Response> post(String path, String body) async {
+    Map<String, String> requestHeader = UserSession.getTokenHeader(headers);
     Uri uri = Uri.parse("${host}${path}");
-    Response response = await Client().post(uri, body: body, headers: headers);
+    Response response =
+        await Client().post(uri, body: body, headers: requestHeader);
     return response;
   }
 }

@@ -3,9 +3,10 @@ import 'package:blog/core/util/validator_util.dart';
 import 'package:blog/view/components/custom_elevated_button.dart';
 import 'package:blog/view/components/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:logger/logger.dart';
 
-class JoinPage extends StatelessWidget {
+class JoinPage extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
   final _username = TextEditingController(); // 추가
   final _password = TextEditingController(); // 추가
@@ -14,14 +15,15 @@ class JoinPage extends StatelessWidget {
   JoinPage({super.key}); // 추가
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    UserController userCT = ref.read(userController);
     Logger().d("joinpage 그려짐");
     return Scaffold(
-      body: _buildBody(),
+      body: _buildBody(userCT),
     );
   }
 
-  Widget _buildBody() {
+  Widget _buildBody(UserController userCT) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: ListView(
@@ -37,13 +39,13 @@ class JoinPage extends StatelessWidget {
               ),
             ),
           ),
-          _joinForm(), // 추가
+          _joinForm(userCT), // 추가
         ],
       ),
     );
   }
 
-  Widget _joinForm() {
+  Widget _joinForm(UserController userCT) {
     return Form(
       key: _formKey,
       child: Column(
@@ -68,7 +70,7 @@ class JoinPage extends StatelessWidget {
             funPageRoute: () {
               if (_formKey.currentState!.validate()) {
                 // 추가
-                UserController().join(
+                userCT.join(
                     username: _username.text.trim(),
                     password: _password.text.trim(),
                     email: _email.text.trim());
@@ -77,7 +79,7 @@ class JoinPage extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {
-              UserController().loginForm(); // 추가
+              userCT.loginForm(); // 추가
             },
             child: const Text("로그인 페이지로 이동"),
           ),

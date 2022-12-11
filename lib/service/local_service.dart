@@ -21,8 +21,7 @@ class LocalService {
     final prefs = await SharedPreferences.getInstance();
     final deviceJwtToken = prefs.getString("jwtToken");
     if (deviceJwtToken != null) {
-      Response response =
-          await HttpConnector().get("/jwtToken", jwtToken: deviceJwtToken);
+      Response response = await HttpConnector().get("/jwtToken");
       ResponseDto responseDto = toResponseDto(response);
 
       if (responseDto.code == 1) {

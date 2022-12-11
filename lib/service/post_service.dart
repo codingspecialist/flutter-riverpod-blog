@@ -4,6 +4,7 @@ import 'package:blog/dto/response_dto.dart';
 import 'package:blog/model/post.dart';
 import 'package:blog/model/user_session.dart';
 import 'package:http/http.dart';
+import 'package:logger/logger.dart';
 
 class PostService {
   static final PostService _instance = PostService._single();
@@ -13,14 +14,16 @@ class PostService {
   }
 
   Future<ResponseDto> findAll() async {
-    Response response =
-        await HttpConnector().get("/post", jwtToken: UserSession.jwtToken);
+    Logger().d("유저 세션 토큰 : ${UserSession.jwtToken}");
+    Response response = await HttpConnector().get("/post");
 
     ResponseDto responseDto = toResponseDto(response);
     if (responseDto.code == 1) {
       List<dynamic> mapList = responseDto.data; // dynamic
       List<Post> postList = mapList.map((e) => Post.fromJson(e)).toList();
       responseDto.data = postList;
+    } else {
+      responseDto.data = [];
     }
 
     return responseDto;
