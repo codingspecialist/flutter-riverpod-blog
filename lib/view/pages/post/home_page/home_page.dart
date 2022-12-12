@@ -1,6 +1,6 @@
 import 'package:blog/controller/post_controller.dart';
 import 'package:blog/core/constant/move.dart';
-import 'package:blog/model/user_session.dart';
+import 'package:blog/provider/auth_provider.dart';
 import 'package:blog/view/components/custom_navigation.dart';
 import 'package:blog/view/pages/post/home_page/model/home_page_model.dart';
 import 'package:blog/view/pages/post/home_page/model/home_page_view_model.dart';
@@ -17,14 +17,11 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     PostController postCT = ref.read(postController);
-    Logger().d("homePage 빌드");
 
     return Scaffold(
       key: scaffoldKey,
       drawer: CustomNavigation(scaffoldKey),
-      appBar: AppBar(
-          title: Text(
-              "로그인한 유저 토큰 : ${UserSession.user == null ? "없음" : UserSession.user!.username}")),
+      appBar: AppBar(title: const Text("home page")),
       body: RefreshIndicator(
         key: refreshKey,
         onRefresh: () async {
@@ -36,7 +33,6 @@ class HomePage extends ConsumerWidget {
   }
 
   Widget _buildBody(PostController postCT) {
-    Logger().d("Consumer _buildBody 실행");
     return Consumer(
       builder: (context, ref, child) {
         HomePageModel? model = ref.watch(homePageViewModel);

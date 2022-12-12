@@ -2,13 +2,13 @@ import 'dart:convert';
 
 import 'package:blog/core/http_connector.dart';
 import 'package:blog/core/util/parsing_util.dart';
-import 'package:blog/model/user_session.dart';
+import 'package:blog/model/session_user.dart';
 import 'package:blog/model/user.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
+import 'package:blog/provider/auth_provider.dart';
 import 'package:http/http.dart';
-
-import 'local_service.dart';
+import 'package:logger/logger.dart';
 
 class UserService {
   final HttpConnector httpConnector = HttpConnector();
@@ -35,22 +35,21 @@ class UserService {
 
     // 3. 토큰 받기
     String jwtToken = response.headers["authorization"].toString();
+    await secureStorage.write(key: "jwtToken", value: jwtToken);
 
-    // 4. 토큰을 디바이스와 세션에 저장
-    await secureStorage.write(key: "jwtToken", value: jwtToken); // 자동 로그인시 필요
-
-    // 5. ResponseDto에서 User 꺼내기
+    // 4. ResponseDto 만들기
     ResponseDto responseDto = toResponseDto(response);
-
-    // 6. AuthProvider에 로긴 정보 저장
-    User user = User.fromJson(responseDto.data);
-    UserSession.successAuthentication(user, jwtToken);
+    if (responseDto.code == 1) {
+      User user = User.fromJson(responseDto.data);
+      responseDto.data = user;
+    }
 
     return responseDto; // ResponseDto 응답
   }
 
-  Future<ResponseDto> fetchUserInfo(int id) async {
-    Response response = await httpConnector.get("/user/$id");
+  Future<ResponseDto> fetchUserInfo(int id, String jwtToken) async {
+    Response response =
+        await httpConnector.get("/user/$id", jwtToken: jwtToken);
     ResponseDto responseDto = toResponseDto(response);
     if (responseDto.code == 1) {
       // 통신이 성공했을 때만 파싱을 해줘야 한다.

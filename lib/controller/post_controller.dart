@@ -2,6 +2,8 @@ import 'package:blog/core/constant/move.dart';
 import 'package:blog/dto/post_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:blog/model/post.dart';
+import 'package:blog/model/session_user.dart';
+import 'package:blog/provider/auth_provider.dart';
 import 'package:blog/service/post_service.dart';
 import 'package:blog/view/pages/post/detail_page/detail_page.dart';
 import 'package:blog/view/pages/post/detail_page/model/detail_page_view_model.dart';
@@ -26,6 +28,7 @@ final postController = Provider<PostController>((ref) {
 class PostController {
   final mContext = navigatorKey.currentContext;
   final Ref _ref;
+
   PostController(this._ref);
 
   PostService postService = PostService();
@@ -43,6 +46,11 @@ class PostController {
     );
   }
 
+  void moveHomePage() {
+    Navigator.of(mContext!)
+        .pushNamedAndRemoveUntil(Move.homePage, (route) => false);
+  }
+
   void moveWritePage() {
     Navigator.pushNamed(mContext!, Move.writePage);
   }
@@ -57,7 +65,8 @@ class PostController {
   }
 
   void deletePost(int postId) async {
-    ResponseDto responseDto = await postService.fetchDeletePost(postId);
+    ResponseDto responseDto = await postService.fetchDeletePost(
+        postId, _ref.read(authProvider).jwtToken);
     if (responseDto.code == 1) {
       Logger().d("게시글 삭제 성공 : $postId");
       _ref.read(homePageViewModel.notifier).notifyDelete(postId);
@@ -73,7 +82,8 @@ class PostController {
       {required String title, required String content}) async {
     PostWriteReqDto postWriteReqDto =
         PostWriteReqDto(title: title, content: content);
-    ResponseDto responseDto = await postService.fetchWritePost(postWriteReqDto);
+    ResponseDto responseDto = await postService.fetchWritePost(
+        postWriteReqDto, _ref.read(authProvider).jwtToken);
     if (responseDto.code == 1) {
       _ref.read(homePageViewModel.notifier).notifyAdd(responseDto.data);
       Navigator.pop(mContext!);
@@ -88,8 +98,8 @@ class PostController {
       {required int id, required String title, required String content}) async {
     PostUpdateReqDto postUpdateReqDto =
         PostUpdateReqDto(title: title, content: content);
-    ResponseDto responseDto =
-        await postService.fetchUpdatePost(id, postUpdateReqDto);
+    ResponseDto responseDto = await postService.fetchUpdatePost(
+        id, postUpdateReqDto, _ref.read(authProvider).jwtToken);
     if (responseDto.code == 1) {
       // detail page 반영
       _ref

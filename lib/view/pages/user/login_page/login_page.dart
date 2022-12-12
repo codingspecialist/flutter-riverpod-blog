@@ -1,6 +1,8 @@
+import 'package:blog/controller/post_controller.dart';
 import 'package:blog/controller/user_controller.dart';
 import 'package:blog/core/constant/move.dart';
 import 'package:blog/core/util/validator_util.dart';
+import 'package:blog/provider/auth_provider.dart';
 import 'package:blog/view/components/custom_elevated_button.dart';
 import 'package:blog/view/components/custom_text_form_field.dart';
 import 'package:flutter/material.dart';
@@ -15,6 +17,7 @@ class LoginPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref.read(authProvider.notifier).autoLogin();
     UserController userCT = ref.read(userController);
     Logger().d("로그인 페이지 빌드 시작");
     return Scaffold(body: _buildBody(context, userCT));

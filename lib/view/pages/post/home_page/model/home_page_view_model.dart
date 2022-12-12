@@ -1,10 +1,15 @@
+import 'package:blog/controller/post_controller.dart';
+import 'package:blog/controller/user_controller.dart';
 import 'package:blog/core/constant/move.dart';
 import 'package:blog/dto/response_dto.dart';
 import 'package:blog/model/post.dart';
+import 'package:blog/model/session_user.dart';
+import 'package:blog/provider/auth_provider.dart';
 import 'package:blog/service/post_service.dart';
 import 'package:blog/view/pages/post/home_page/model/home_page_model.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:logger/logger.dart';
 
 /*
  * 메서드 이름 규칙 : 동사+명사
@@ -15,16 +20,18 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final homePageViewModel =
     StateNotifierProvider.autoDispose<HomePageViewModel, HomePageModel?>((ref) {
-  return HomePageViewModel(null)..notifyViewModel();
+  return HomePageViewModel(null, ref)..notifyViewModel();
 });
 
 class HomePageViewModel extends StateNotifier<HomePageModel?> {
   final PostService postService = PostService();
   final mContext = navigatorKey.currentContext;
-  HomePageViewModel(super.state);
+  final Ref _ref;
+  HomePageViewModel(super.state, this._ref);
 
   Future<void> notifyViewModel() async {
-    ResponseDto responseDto = await postService.fetchPostList();
+    ResponseDto responseDto =
+        await postService.fetchPostList(_ref.read(authProvider).jwtToken);
     if (responseDto.code == 1) {
       state = HomePageModel(responseDto.data);
     } else {

@@ -22,8 +22,8 @@ class PostService {
     return _instance;
   }
 
-  Future<ResponseDto> fetchPostList() async {
-    Response response = await httpConnector.get("/post");
+  Future<ResponseDto> fetchPostList(String jwtToken) async {
+    Response response = await httpConnector.get("/post", jwtToken: jwtToken);
 
     ResponseDto responseDto = toResponseDto(response);
     if (responseDto.code == 1) {
@@ -35,8 +35,9 @@ class PostService {
     return responseDto;
   }
 
-  Future<ResponseDto> fetchPost(int postId) async {
-    Response response = await httpConnector.get("/post/$postId");
+  Future<ResponseDto> fetchPost(int postId, String jwtToken) async {
+    Response response =
+        await httpConnector.get("/post/$postId", jwtToken: jwtToken);
     ResponseDto responseDto = toResponseDto(response);
     if (responseDto.code == 1) {
       responseDto.data = Post.fromJson(responseDto.data);
@@ -44,14 +45,17 @@ class PostService {
     return responseDto;
   }
 
-  Future<ResponseDto> fetchDeletePost(int postId) async {
-    Response response = await httpConnector.delete("/post/$postId");
+  Future<ResponseDto> fetchDeletePost(int postId, String jwtToken) async {
+    Response response =
+        await httpConnector.delete("/post/$postId", jwtToken: jwtToken);
     return toResponseDto(response);
   }
 
-  Future<ResponseDto> fetchWritePost(PostWriteReqDto postWriteReqDto) async {
+  Future<ResponseDto> fetchWritePost(
+      PostWriteReqDto postWriteReqDto, String jwtToken) async {
     String requestBody = jsonEncode(postWriteReqDto.toJson());
-    Response response = await httpConnector.post("/post", requestBody);
+    Response response =
+        await httpConnector.post("/post", requestBody, jwtToken: jwtToken);
     ResponseDto responseDto = toResponseDto(response);
     if (responseDto.code == 1) {
       responseDto.data = Post.fromJson(responseDto.data);
@@ -60,9 +64,10 @@ class PostService {
   }
 
   Future<ResponseDto> fetchUpdatePost(
-      int id, PostUpdateReqDto postUpdateReqDto) async {
+      int id, PostUpdateReqDto postUpdateReqDto, String jwtToken) async {
     String requestBody = jsonEncode(postUpdateReqDto.toJson());
-    Response response = await httpConnector.put("/post/$id", requestBody);
+    Response response =
+        await httpConnector.put("/post/$id", requestBody, jwtToken: jwtToken);
     ResponseDto responseDto = toResponseDto(response);
     if (responseDto.code == 1) {
       responseDto.data = Post.fromJson(responseDto.data);

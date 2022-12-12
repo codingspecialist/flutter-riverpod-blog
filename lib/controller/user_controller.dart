@@ -1,8 +1,9 @@
 import 'package:blog/core/constant/move.dart';
-import 'package:blog/model/user_session.dart';
-import 'package:blog/service/user_service.dart';
 import 'package:blog/dto/auth_req_dto.dart';
 import 'package:blog/dto/response_dto.dart';
+import 'package:blog/model/session_user.dart';
+import 'package:blog/provider/auth_provider.dart';
+import 'package:blog/service/user_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -72,9 +73,13 @@ class UserController {
 
     // 2. 통신 요청
     ResponseDto responseDto = await userService.fetchLogin(loginReqDto);
+
     //3. 비지니스 로직 처리
     if (responseDto.code == 1) {
-      Navigator.of(navigatorKey.currentContext!)
+      String? jwtToken = await secureStorage.read(key: "jwtToken");
+      SessionUser sessionUser = SessionUser(responseDto.data, jwtToken, true);
+      _ref.read(authProvider.notifier).authentication(sessionUser);
+      Navigator.of(mContext!)
           .pushNamedAndRemoveUntil(Move.homePage, (route) => false);
     } else {
       ScaffoldMessenger.of(mContext!).showSnackBar(
@@ -84,7 +89,7 @@ class UserController {
   }
 
   Future<void> logout() async {
-    await UserSession.removeAuthentication();
+    _ref.read(authProvider.notifier).inValidate();
     await Navigator.of(navigatorKey.currentContext!)
         .pushNamedAndRemoveUntil(Move.loginPage, (route) => false);
   }
