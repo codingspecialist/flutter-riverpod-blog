@@ -1,6 +1,9 @@
 # 플러터 riverpod 블로그 만들기
 
+K디지털 수업 내용 반영
+
 ### 아키텍처
+
 - Service, HttpConnector 싱글톤 패턴으로 구현 (이유 : Provider 접근이 위젯에서 ref로만 되서 싱글톤 패턴이 좋음)
 - ViewModel, Controller는 View관련된 것이어서 Provider로 구현
 - ViewModel에서는 절대 controller 요청하면 안됨.
